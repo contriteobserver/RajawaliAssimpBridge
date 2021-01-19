@@ -22,6 +22,9 @@ set(ASSIMP_PATH ${PROJECT_SOURCE_DIR}/lib/${ANDROID_ABI}/libassimp.a)
 add_library(assimp-lib STATIC IMPORTED)
 set_property(TARGET assimp-lib PROPERTY IMPORTED_LOCATION ${ASSIMP_PATH})
 
+include_directories(
+             include
+)
 
 add_library( # Sets the name of the library.
              bridgeJNI

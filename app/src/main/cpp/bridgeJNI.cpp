@@ -1,12 +1,11 @@
 #include <jni.h>
 #include <string>
 
-extern "C" unsigned int aiGetVersionMajor (void);
-extern "C" unsigned int aiGetVersionMinor (void);
-extern "C" unsigned int aiGetVersionRevision(void);
+#include <assimp/version.h>
+#include <assimp/Importer.hpp>
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_MainActivity_getAssimpVersion(
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIversion(
         JNIEnv* env,
         jobject /* this */) {
     std::string version =
@@ -14,4 +13,22 @@ Java_org_rajawali_rajawaliassimpbridge_MainActivity_getAssimpVersion(
             "." + std::to_string(aiGetVersionMinor()) +
             "." + std::to_string(aiGetVersionRevision());
     return env->NewStringUTF(version.c_str());
+}
+
+extern "C" JNIEXPORT jlong JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_createJNIimporter(
+        JNIEnv* env,
+        jobject /* this */) {
+    Assimp::Importer* importer = new Assimp::Importer();
+    return (jlong) importer;
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_destroyJNIimporter(
+        JNIEnv* env,
+        jobject, /* this */
+        jlong jImporter) {
+    Assimp::Importer* importer = reinterpret_cast<Assimp::Importer *>(jImporter);
+    delete importer;
+    return;
 }
