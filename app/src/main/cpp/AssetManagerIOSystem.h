@@ -1,58 +1,43 @@
-#ifndef RAJAWALI_ASSIMP_BRIDGE_ANDROIDASSETIOSYSTEM_H
-#define RAJAWALI_ASSIMP_BRIDGE_ANDROIDASSETIOSYSTEM_H
+#ifndef RAJAWALI_ASSIMP_BRIDGE_ASSETMANAGERIOSYSTEM_H
+#define RAJAWALI_ASSIMP_BRIDGE_ASSETMANAGERIOSYSTEM_H
 
-#include <string">
+#include <android/asset_manager_jni.h>
 
 #include <assimp/DefaultIOSystem.h>
-#include <android/asset_manager.h>
-#include <android/asset_manager_jni.h>
-#include <android/native_activity.h>
-class AndroidAssetIOSystem : public DefaultIOSystem {
+#include <assimp/IOStream.hpp>
+
+class AssetManagerIOSystem : public Assimp::DefaultIOSystem {
 
 public:
     AAssetManager* mApkAssetManager;
 
-    /** Constructor. */
-    AndroidAssetIOSystem() {};
+    AssetManagerIOSystem(JNIEnv* env, jobject assetManager) { mApkAssetManager = AAssetManager_fromJava(env, assetManager); }
+    ~AssetManagerIOSystem() {};
 
-    /** Destructor. */
-    ~AndroidAssetIOSystem() {};
-
-    // -------------------------------------------------------------------
-    /** Tests for the existence of a file at the given path. */
     bool Exists( const char* pFile) const;
 
-    // -------------------------------------------------------------------
-    /** Returns the directory separator. */
-    char getOsSeparator() const;
-
-    // -------------------------------------------------------------------
-    /** Open a new file with a given path. */
     Assimp::IOStream* Open( const char* pFile, const char* pMode = "rb");
 
-    // -------------------------------------------------------------------
-    /** Closes the given file and releases all resources associated with it. */
     void Close( Assimp::IOStream* pFile);
 
-    // -------------------------------------------------------------------
-    /** Compare two paths */
-    bool ComparePaths (const char* one, const char* second) const;
+private:
 
-    /** @brief get the file name of a full filepath
-     * example: /tmp/archive.tar.gz -> archive.tar.gz
-     */
-    static std::string fileName( const std::string &path );
+    class AssetIOStream : public Assimp::IOStream {
+        AAsset * asset;
 
-    /** @brief get the complete base name of a full filepath
-     * example: /tmp/archive.tar.gz -> archive.tar
-     */
-    static std::string completeBaseName( const std::string &path);
+    public:
+        AssetIOStream(AAsset *asset) { this->asset = asset; };
+        ~AssetIOStream() { AAsset_close(asset); }
 
-    /** @brief get the path of a full filepath
-     * example: /tmp/archive.tar.gz -> /tmp/
-     */
-    static std::string absolutePath( const std::string &path);
+        size_t Read(void* pvBuffer, size_t pSize, size_t pCount) { return AAsset_read(asset, pvBuffer, pSize * pCount);}
+        size_t Write(const void* pvBuffer, size_t pSize, size_t pCount) { return 0; };
+        aiReturn Seek(size_t pOffset, aiOrigin pOrigin) { return (AAsset_seek(asset, pOffset, pOrigin) >= 0 ? aiReturn_SUCCESS : aiReturn_FAILURE); }
+        size_t Tell() const { return(AAsset_getLength(asset) - AAsset_getRemainingLength(asset)); };
+        size_t FileSize() const  { return  AAsset_getLength(asset); }
+        void Flush() { }
+    };
+
 };
 
 
-#endif //RAJAWALI_ASSIMP_BRIDGE_ANDROIDASSETIOSYSTEM_H
+#endif //RAJAWALI_ASSIMP_BRIDGE_ASSETMANAGERIOSYSTEM_H

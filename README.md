@@ -3,11 +3,20 @@ Example Bridge between [Rajawali](https://github.com/Rajawali/Rajawali) and the 
 
 ### Initial crude approach to cross-compiling the Open Asset Import Library
 ```
+cd
+
 rm -rf ~/assimp
+rm -rf ~/RajawaliAssimpBridge
+
 git clone https://github.com/assimp/assimp.git
 git clone https://github.com/contriteobserver/RajawaliAssimpBridge.git
 
-mkdir assimp/contrib/android-cmake/build
+mkdir ~/assimp/contrib/android-cmake/build
+mkdir -p ~/RajawaliAssimpBridge/app/src/main/cpp/lib/armeabi-v7a/
+mkdir -p ~/RajawaliAssimpBridge/app/src/main/cpp/lib/arm64-v8a/
+mkdir -p ~/RajawaliAssimpBridge/app/src/main/cpp/lib/x86/
+mkdir -p ~/RajawaliAssimpBridge/app/src/main/cpp/lib/x86_64/
+
 cd assimp/contrib/android-cmake/build
 cmake -DCMAKE_TOOLCHAIN_FILE=~/Android/Sdk/ndk-bundle/build/cmake/android.toolchain.cmake -DANDROID_PLATFORM=21 -DANDROID_NDK=~/Android/Sdk/ndk-bundle/ -DBUILD_SHARED_LIBS=OFF -DASSIMP_NO_EXPORT=ON -DASSIMP_BUILD_TESTS=OFF -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_ZLIB=ON -DCMAKE_BUILD_TYPE=Release -DANDROID_ABI="armeabi-v7a with NEON" ~/assimp
 cmake ~/assimp/CMakeLists.txt
@@ -39,4 +48,6 @@ cp lib/libassimp.a ~/RajawaliAssimpBridge/app/src/main/cpp/lib/x86_64
 
 mkdir -p ~/RajawaliAssimpBridge/app/src/main/cpp/include
 cp -r ~/assimp/include ~/RajawaliAssimpBridge/app/src/main/cpp
+
+cd
 ```

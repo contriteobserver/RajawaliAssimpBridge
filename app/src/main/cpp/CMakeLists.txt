@@ -33,7 +33,9 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
-             bridgeJNI.cpp )
+             bridgeJNI.cpp
+        AssetManagerIOSystem.cpp
+        )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -43,6 +45,7 @@ add_library( # Sets the name of the library.
 
 find_library( # Sets the name of the path variable.
               log-lib
+              android
 
               # Specifies the name of the NDK library that
               # you want CMake to locate.
@@ -57,6 +60,7 @@ target_link_libraries( # Specifies the target library.
 
                        # Links the target library to the log library
                        # included in the NDK.
+                       android
                        assimp-lib
                        z-lib
                        ${log-lib} )

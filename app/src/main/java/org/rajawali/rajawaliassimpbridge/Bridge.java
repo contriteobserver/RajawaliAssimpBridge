@@ -1,5 +1,7 @@
 package org.rajawali.rajawaliassimpbridge;
 
+import android.content.res.AssetManager;
+
 public class Bridge {
 
     // Used to load the bridge library on application startup.
@@ -8,7 +10,8 @@ public class Bridge {
     }
 
     static String getVersion() { return getJNIversion(); }
-    static long createImporter() { return createJNIimporter(); }
+    static long createImporter(AssetManager assetManager) { return createJNIimporter(assetManager); }
+    static long readFile(long importer, String path) { return readJNIfile(importer, path); }
     static void destroyImporter(long importer) { destroyJNIimporter(importer); }
 
     /**
@@ -16,7 +19,8 @@ public class Bridge {
      * which is packaged with this application.
      */
     private static native String getJNIversion();
-    private static native long createJNIimporter();
+    private static native long createJNIimporter(AssetManager assetManager);
+    private static native long readJNIfile(long importer, String path);
     private static native void destroyJNIimporter(long importer);
 
 }

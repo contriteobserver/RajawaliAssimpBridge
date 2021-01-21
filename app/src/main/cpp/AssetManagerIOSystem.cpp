@@ -1,51 +1,30 @@
-#include "AndroidAssetIOSystem.h"
-// -------------------------------------------------------------------
+#include <android/asset_manager.h>
+#include <assimp/DefaultIOStream.h>
+
+#include "AssetManagerIOSystem.h"
+
 /** Tests for the existence of a file at the given path. */
-bool Exists( const char* pFile) const {
-
-}
-
-// -------------------------------------------------------------------
-/** Returns the directory separator. */
-char getOsSeparator() const {
-
+bool AssetManagerIOSystem::Exists( const char* pFile) const {
+    assert(NULL != mApkAssetManager);
+    AAsset *  asset = AAssetManager_open(mApkAssetManager, pFile, AASSET_MODE_UNKNOWN);
+    if (!asset) { return false; }
+    if (asset) AAsset_close(asset);
+    return true;
 }
 
 // -------------------------------------------------------------------
 /** Open a new file with a given path. */
-Assimp::IOStream* Open( const char* pFile, const char* pMode = "rb") {
-    return NULL;
+Assimp::IOStream* AssetManagerIOSystem::Open( const char* pFile, const char* pMode) {
+    assert(NULL != mApkAssetManager);
+    AAsset *  asset = AAssetManager_open(mApkAssetManager, pFile, AASSET_MODE_UNKNOWN);
+    if (!asset) { return NULL; }
+
+    return new AssetIOStream(asset);
 }
 
 // -------------------------------------------------------------------
 /** Closes the given file and releases all resources associated with it. */
-void Close( Assimp::IOStream* pFile) {
-
+void AssetManagerIOSystem::Close( Assimp::IOStream* pFile) {
+    delete reinterpret_cast<AssetIOStream *>(pFile);
 }
 
-// -------------------------------------------------------------------
-/** Compare two paths */
-bool ComparePaths (const char* one, const char* second) const {
-    return false;
-}
-
-/** @brief get the file name of a full filepath
- * example: /tmp/archive.tar.gz -> archive.tar.gz
- */
-static std::string fileName( const std::string &path ) {
-    return "";
-}
-
-/** @brief get the complete base name of a full filepath
- * example: /tmp/archive.tar.gz -> archive.tar
- */
-static std::string completeBaseName( const std::string &path) {
-    return ""
-}
-
-/** @brief get the path of a full filepath
- * example: /tmp/archive.tar.gz -> /tmp/
- */
-static std::string absolutePath( const std::string &path) {
-    return ""
-}
