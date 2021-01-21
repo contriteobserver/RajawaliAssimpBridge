@@ -38,5 +38,5 @@ cp contrib/zlib/libzlibstatic.a ~/RajawaliAssimpBridge/app/src/main/cpp/lib/x86_
 cp lib/libassimp.a ~/RajawaliAssimpBridge/app/src/main/cpp/lib/x86_64
 
 mkdir -p ~/RajawaliAssimpBridge/app/src/main/cpp/include
-cp -r ~/assimp/include ~/RajawaliAssimpBridge/app/src/main/cpp/include
+cp -r ~/assimp/include ~/RajawaliAssimpBridge/app/src/main/cpp
 ```
