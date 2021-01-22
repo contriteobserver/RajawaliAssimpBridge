@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 
 import org.rajawali3d.Object3D;
+import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.materials.Material;
 import org.rajawali3d.math.vector.Vector3;
 import org.rajawali3d.renderer.Renderer;
@@ -48,23 +49,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void initScene() {
-            scene = Bridge.readFile(importer, "tetrahedron.obj");
-            Log.i(getLocalClassName() + ".initScene", "found " + Bridge.getNumMeshes(scene) + " meshes");
-            Log.i(getLocalClassName() + ".initScene", "found " + Bridge.getNumMaterials(scene) + " materials");
-            Log.i(getLocalClassName() + ".initScene", "found " + Bridge.getNumTextures(scene) + " textures");
-            Log.i(getLocalClassName() + ".initScene", "found " + Bridge.getNumLights(scene) + " lights");
-            Log.i(getLocalClassName() + ".initScene", "found " + Bridge.getNumCameras(scene) + " cameras");
-            Log.i(getLocalClassName() + ".initScene", "found " + Bridge.getNumAnimations(scene) + " animations");
+            getCurrentScene().setBackgroundColor(Color.MAGENTA & Color.DKGRAY);
 
-            getCurrentScene().setBackgroundColor(Color.CYAN & Color.DKGRAY);
-
+            scene = Bridge.readFile(importer, "tetrahedron.gltf");
             for(int i=0; i<Bridge.getNumMeshes(scene); i++) {
+                Material material = Bridge.getMaterialAt(scene, Bridge.getMaterialIndex(scene, i));
                 Object3D obj = Bridge.getObjAt(scene, i);
-                obj.setMaterial(new Material());
+                obj.setMaterial(material);
                 getCurrentScene().addChild(obj);
             }
 
-            getCurrentCamera().setPosition(5,3,4);
+            getCurrentCamera().setPosition(5,3,-4);
             getCurrentCamera().setLookAt(Vector3.ZERO);
         }
 

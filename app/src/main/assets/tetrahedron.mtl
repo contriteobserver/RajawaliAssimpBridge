@@ -1,40 +1,40 @@
-# four materials for tetrahedron
+
 newmtl Cyan
-Ns 99
-Ka 0.25 0.25 0.25
-Kd 0 0.75 0.75
+Ns 256
 Ka 1 1 1
+Kd 0 0.75 0.75
+Ks 0.50 0.50 0.50
 Ke 0 0 0
-Ni 1
+Ni 1.45
 d 1
 illum 2
 
 newmtl Green
-Ns 99
-Ka 0.25 0.25 0.25
+Ns 256
+Ka 1 1 1
 Kd 0 0.25 0
-Ka 1 1 1
+Ks 0.50 0.50 0.50
 Ke 0 0 0
-Ni 1
-d 1
-illum 2
-
-newmtl Red
-Ns 99
-Ka 0.25 0.25 0.25
-Kd 0.800000 0 0
-Ka 1 1 1
-Ke 0 0 0
-Ni 1
+Ni 1.45
 d 1
 illum 2
 
 newmtl Orange
-Ns 99
-Ka 0.25 0.25 0.25
-Kd 0.75 0.5 0
+Ns 256
 Ka 1 1 1
+Kd 0.75 0.50 0
+Ks 0.50 0.50 0.50
 Ke 0 0 0
-Ni 1
+Ni 1.45
+d 1
+illum 2
+
+newmtl Red
+Ns 256
+Ka 1 1 1
+Kd 0.80 0 0
+Ks 0.50 0.50 0.50
+Ke 0 0 0
+Ni 1.45
 d 1
 illum 2

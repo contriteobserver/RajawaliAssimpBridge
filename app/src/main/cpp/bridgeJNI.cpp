@@ -119,6 +119,17 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_destroyJNIimporter(
     return;
 }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImaterialIndex(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
+    return mesh->mMaterialIndex;
+}
+
 extern "C" JNIEXPORT jfloatArray JNICALL
 Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIvertices(
         JNIEnv* env,
@@ -216,7 +227,6 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIindices(
         jint jIndex) {
     aiScene * scene = reinterpret_cast<aiScene *>(jScene);
     aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
-
     jintArray result;
     result = env->NewIntArray(3 * mesh->mNumFaces);
     for(int i=0; i<mesh->mNumFaces; i++) {
@@ -227,5 +237,60 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIindices(
         }
         env->SetIntArrayRegion(result,3*i,3, buf);
     }
+    return result;
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImeshName(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
+    return env->NewStringUTF(mesh->mName.C_Str());
+}
+
+extern "C" JNIEXPORT jfloatArray JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdiffuseRGBA(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    aiColor3D color (0.f,0.f,0.f);
+    material->Get(AI_MATKEY_COLOR_DIFFUSE,color);
+    jfloatArray result;
+    result = env->NewFloatArray(4);
+    jfloat buf[4];
+    buf[0] = color.r;
+    buf[1] = color.g;
+    buf[2] = color.b;
+    buf[3] = 1;
+    env->SetFloatArrayRegion(result,0,4, buf);
+    return result;
+}
+
+extern "C" JNIEXPORT jfloatArray JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIambientRGBA(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    aiColor3D color (0.f,0.f,0.f);
+    material->Get(AI_MATKEY_COLOR_AMBIENT,color);
+    jfloatArray result;
+    result = env->NewFloatArray(4);
+    jfloat buf[4];
+    buf[0] = color.r;
+    buf[1] = color.g;
+    buf[2] = color.b;
+    buf[3] = 1;
+    env->SetFloatArrayRegion(result,0,4, buf);
     return result;
 }
