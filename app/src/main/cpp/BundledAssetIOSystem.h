@@ -1,18 +1,18 @@
-#ifndef RAJAWALI_ASSIMP_BRIDGE_ASSETMANAGERIOSYSTEM_H
-#define RAJAWALI_ASSIMP_BRIDGE_ASSETMANAGERIOSYSTEM_H
+#ifndef RAJAWALI_ASSIMP_BRIDGE_BUNDLEDASSETIOSYSTEM_H
+#define RAJAWALI_ASSIMP_BRIDGE_BUNDLEDASSETIOSYSTEM_H
 
 #include <android/asset_manager_jni.h>
 
 #include <assimp/DefaultIOSystem.h>
 #include <assimp/IOStream.hpp>
 
-class AssetManagerIOSystem : public Assimp::DefaultIOSystem {
+class BundledAssetIOSystem : public Assimp::DefaultIOSystem {
 
 public:
     AAssetManager* mApkAssetManager;
 
-    AssetManagerIOSystem(JNIEnv* env, jobject assetManager) { mApkAssetManager = AAssetManager_fromJava(env, assetManager); }
-    ~AssetManagerIOSystem() {};
+    BundledAssetIOSystem(JNIEnv* env, jobject assetManager) { mApkAssetManager = AAssetManager_fromJava(env, assetManager); }
+    ~BundledAssetIOSystem() {};
 
     bool Exists( const char* pFile) const;
 
@@ -40,4 +40,4 @@ private:
 };
 
 
-#endif //RAJAWALI_ASSIMP_BRIDGE_ASSETMANAGERIOSYSTEM_H
+#endif //RAJAWALI_ASSIMP_BRIDGE_BUNDLEDASSETIOSYSTEM_H

@@ -6,7 +6,7 @@
 #include <assimp/version.h>
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
-#include "AssetManagerIOSystem.h"
+#include "BundledAssetIOSystem.h"
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIversion(
@@ -25,7 +25,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_createJNIimporter(
         jclass /* this */,
         jobject assetManager) {
     Assimp::Importer* importer = new Assimp::Importer();
-    Assimp::DefaultIOSystem *ioSystem = new AssetManagerIOSystem(env, assetManager);
+    Assimp::DefaultIOSystem *ioSystem = new BundledAssetIOSystem(env, assetManager);
     importer->SetIOHandler(ioSystem);
     return (jlong) importer;
 }
@@ -46,6 +46,25 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_readJNIfile(
                                           aiProcess_SortByPType);
     env->ReleaseStringUTFChars(pathObj, pFile);
     return (jlong) scene;
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_errorJNImessage(
+        JNIEnv* env,
+        jclass, /* this */
+        jlong jImporter) {
+    Assimp::Importer *importer = reinterpret_cast<Assimp::Importer *>(jImporter);
+    const char *message = importer->GetErrorString();
+    return env->NewStringUTF(message);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_freeJNIscene(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jImporter) {
+    Assimp::Importer* importer = reinterpret_cast<Assimp::Importer *>(jImporter);
+    importer->FreeScene();
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -231,11 +250,30 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIindices(
     result = env->NewIntArray(3 * mesh->mNumFaces);
     for(int i=0; i<mesh->mNumFaces; i++) {
         aiFace face = mesh->mFaces[i];
-        jint buf[face.mNumIndices];
-        for(int j=0; j<face.mNumIndices; j++) {
-            buf[j] = face.mIndices[j];
+        jint buf[3]; // Rajawali expects triangles
+        switch(face.mNumIndices) {
+            case 0: // nothing to see
+                buf[0] = 0;
+                buf[1] = 0;
+                buf[2] = 0;
+                break;
+            case 1: // unattached point
+                buf[0] = face.mIndices[0];
+                buf[1] = face.mIndices[0];
+                buf[2] = face.mIndices[0];
+                break;
+            case 2: // a loose edge
+                buf[0] = face.mIndices[0];
+                buf[1] = face.mIndices[1];
+                buf[2] = face.mIndices[0];
+                break;
+            default: // reporting only the first three vertices
+                buf[0] = face.mIndices[0];
+                buf[1] = face.mIndices[1];
+                buf[2] = face.mIndices[2];
+                break;
         }
-        env->SetIntArrayRegion(result,3*i,3, buf);
+        env->SetIntArrayRegion(result,3*i, 3, buf);
     }
     return result;
 }
@@ -252,45 +290,128 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImeshName(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdiffuseRGBA(
-        JNIEnv* env,
-        jclass /* this */,
-        jlong jScene,
-        jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
-    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
-
-    aiColor3D color (0.f,0.f,0.f);
-    material->Get(AI_MATKEY_COLOR_DIFFUSE,color);
-    jfloatArray result;
-    result = env->NewFloatArray(4);
-    jfloat buf[4];
-    buf[0] = color.r;
-    buf[1] = color.g;
-    buf[2] = color.b;
-    buf[3] = 1;
-    env->SetFloatArrayRegion(result,0,4, buf);
-    return result;
-}
-
-extern "C" JNIEXPORT jfloatArray JNICALL
 Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIambientRGBA(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
     aiScene * scene = reinterpret_cast<aiScene *>(jScene);
-    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+    aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
 
-    aiColor3D color (0.f,0.f,0.f);
-    material->Get(AI_MATKEY_COLOR_AMBIENT,color);
+    aiColor4D ambient;
+    jfloat buf[] = {1,1,1,1};
     jfloatArray result;
     result = env->NewFloatArray(4);
-    jfloat buf[4];
-    buf[0] = color.r;
-    buf[1] = color.g;
-    buf[2] = color.b;
-    buf[3] = 1;
-    env->SetFloatArrayRegion(result,0,4, buf);
+    if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_AMBIENT, &ambient)) {
+        buf[0] = ambient.r;
+        buf[1] = ambient.g;
+        buf[2] = ambient.b;
+        buf[3] = ambient.a;
+    }
+    env->SetFloatArrayRegion(result,0, 4, buf);
     return result;
 }
+
+extern "C" JNIEXPORT jfloatArray JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdiffuseRGBA(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    aiColor4D diffuse;
+    jfloat buf[] = {1,1,1,1};
+    jfloatArray result;
+    result = env->NewFloatArray(4);
+    if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse)) {
+        buf[0] = diffuse.r;
+        buf[1] = diffuse.g;
+        buf[2] = diffuse.b;
+        buf[3] = diffuse.a;
+    }
+    env->SetFloatArrayRegion(result,0, 4, buf);
+    return result;
+}
+
+extern "C" JNIEXPORT jfloatArray JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIspecularRGBA(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    aiColor4D specular;
+    jfloat buf[] = {1,1,1,1};
+    jfloatArray result;
+    result = env->NewFloatArray(4);
+    if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_SPECULAR, &specular)) {
+        buf[0] = specular.r;
+        buf[1] = specular.g;
+        buf[2] = specular.b;
+        buf[3] = specular.a;
+    }
+    env->SetFloatArrayRegion(result,0, 4, buf);
+    return result;
+}
+
+extern "C" JNIEXPORT jfloat JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIopacity(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    float opacity;
+    material->Get(AI_MATKEY_OPACITY, opacity);
+    return opacity;
+}
+
+extern "C" JNIEXPORT jfloat JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIshininess(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    float shininess;
+    material->Get(AI_MATKEY_SHININESS,shininess);
+    return shininess;
+}
+
+
+extern "C" JNIEXPORT jfloat JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIstrength(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    float strength;
+    material->Get(AI_MATKEY_SHININESS_STRENGTH,strength);
+    return strength;
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdoubleSided(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    bool twoSided;
+    material->Get(AI_MATKEY_TWOSIDED,twoSided);
+    return twoSided;
+}
+

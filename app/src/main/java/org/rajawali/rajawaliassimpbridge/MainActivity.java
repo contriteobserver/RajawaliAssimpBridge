@@ -11,6 +11,9 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 
 import org.rajawali3d.Object3D;
+import org.rajawali3d.animation.Animation;
+import org.rajawali3d.animation.Animation3D;
+import org.rajawali3d.animation.RotateOnAxisAnimation;
 import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.materials.Material;
 import org.rajawali3d.math.vector.Vector3;
@@ -51,13 +54,31 @@ public class MainActivity extends AppCompatActivity {
         protected void initScene() {
             getCurrentScene().setBackgroundColor(Color.MAGENTA & Color.DKGRAY);
 
-            scene = Bridge.readFile(importer, "tetrahedron.gltf");
-            for(int i=0; i<Bridge.getNumMeshes(scene); i++) {
-                Material material = Bridge.getMaterialAt(scene, Bridge.getMaterialIndex(scene, i));
-                Object3D obj = Bridge.getObjAt(scene, i);
-                obj.setMaterial(material);
-                getCurrentScene().addChild(obj);
+            Log.i(getLocalClassName() + ".version", Bridge.getVersion());
+            scene = Bridge.readFile(importer, "tetrahedron.fbx");
+            Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumMeshes(scene)+ " meshes");
+
+            Object3D obj = new Object3D();
+            getCurrentScene().addChild(obj);
+
+            if(scene==0) {
+                Log.e(getLocalClassName() + ".readFile", Bridge.errorMessage(scene));
+            } else {
+                for(int i=0; i<Bridge.getNumMeshes(scene); i++) {
+                    Material material = Bridge.getMaterialAt(scene, Bridge.getMaterialIndex(scene, i));
+                    Object3D child = Bridge.getObjAt(scene, i);
+                    child.setMaterial(material);
+                    obj.addChild(child);
+                }
+                Bridge.freeScene(importer);
             }
+
+            Animation3D anim = new RotateOnAxisAnimation(Vector3.Axis.Y, 360);
+            anim.setTransformable3D(obj);
+            anim.setDurationDelta(6);
+            anim.setRepeatMode(Animation.RepeatMode.INFINITE);
+            anim.play();
+            getCurrentScene().registerAnimation(anim);
 
             getCurrentCamera().setPosition(5,3,-4);
             getCurrentCamera().setLookAt(Vector3.ZERO);

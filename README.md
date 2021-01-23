@@ -2,6 +2,7 @@
 Example Bridge between [Rajawali](https://github.com/Rajawali/Rajawali) and the [Open Asset Import Library (assimp)](https://www.assimp.org)
 
 ### Initial crude approach to cross-compiling the Open Asset Import Library
+A better approach is needed, will revisit this once the bridge foundations are in place.
 ```
 cd
 
