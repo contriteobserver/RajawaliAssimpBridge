@@ -24,7 +24,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_createJNIimporter(
         JNIEnv* env,
         jclass /* this */,
         jobject assetManager) {
-    Assimp::Importer* importer = new Assimp::Importer();
+    auto * importer = new Assimp::Importer();
     Assimp::DefaultIOSystem *ioSystem = new BundledAssetIOSystem(env, assetManager);
     importer->SetIOHandler(ioSystem);
     return (jlong) importer;
@@ -36,7 +36,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_readJNIfile(
         jclass /* this */,
         jlong jImporter,
         jstring pathObj) {
-    Assimp::Importer* importer = reinterpret_cast<Assimp::Importer *>(jImporter);
+    auto * importer = reinterpret_cast<Assimp::Importer *>(jImporter);
 
     const char *pFile = env->GetStringUTFChars(pathObj, 0);
     const aiScene* scene = importer->ReadFile( pFile,
@@ -53,7 +53,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_errorJNImessage(
         JNIEnv* env,
         jclass, /* this */
         jlong jImporter) {
-    Assimp::Importer *importer = reinterpret_cast<Assimp::Importer *>(jImporter);
+    auto * importer = reinterpret_cast<Assimp::Importer *>(jImporter);
     const char *message = importer->GetErrorString();
     return env->NewStringUTF(message);
 }
@@ -63,8 +63,18 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_freeJNIscene(
         JNIEnv* env,
         jclass /* this */,
         jlong jImporter) {
-    Assimp::Importer* importer = reinterpret_cast<Assimp::Importer *>(jImporter);
+    auto * importer = reinterpret_cast<Assimp::Importer *>(jImporter);
     importer->FreeScene();
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_destroyJNIimporter(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jImporter) {
+    auto * importer = reinterpret_cast<Assimp::Importer *>(jImporter);
+    delete importer;
+    return;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -72,7 +82,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNImeshes(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
 
     return scene->mNumMeshes;
 }
@@ -82,7 +92,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNImaterials(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
 
     return scene->mNumMaterials;
 }
@@ -92,7 +102,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNItextures(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
 
     return scene->mNumTextures;
 }
@@ -102,7 +112,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIcameras(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
 
     return scene->mNumCameras;
 }
@@ -113,7 +123,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIlights(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
 
     return scene->mNumLights;
 }
@@ -123,19 +133,9 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIanimations(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
 
     return scene->mNumAnimations;
-}
-
-extern "C" JNIEXPORT void JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_destroyJNIimporter(
-        JNIEnv* env,
-        jclass /* this */,
-        jlong jImporter) {
-    Assimp::Importer* importer = reinterpret_cast<Assimp::Importer *>(jImporter);
-    delete importer;
-    return;
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -144,18 +144,67 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImaterialIndex(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
     return mesh->mMaterialIndex;
 }
 
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImaterialName(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+    return env->NewStringUTF(mtl->GetName().C_Str());
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIambientTexture(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+    aiString path;
+
+    return(AI_SUCCESS == mtl->GetTexture(aiTextureType_DIFFUSE, 0, &path));
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIdiffuseTexture(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+    aiString path;
+
+    return(AI_SUCCESS == mtl->GetTexture(aiTextureType_DIFFUSE, 0, &path));
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIspecularTexture(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+    aiString path;
+
+    return(AI_SUCCESS == mtl->GetTexture(aiTextureType_DIFFUSE, 0, &path));
+}
 extern "C" JNIEXPORT jfloatArray JNICALL
 Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIvertices(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
 
     jfloatArray result;
@@ -177,7 +226,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInormals(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
 
     jfloatArray result;
@@ -199,7 +248,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIcolors(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
 
     jfloatArray result;
@@ -223,13 +272,14 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNItextureCoords(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
 
     jfloatArray result;
-    result = env->NewFloatArray(2 * mesh->mNumUVComponents[0]);
-    for(int i=0; i<mesh->mNumUVComponents[0]; i++) {
-        aiVector3D coords = mesh->mTextureCoords[0][i];
+    result = env->NewFloatArray(2 * mesh->mNumVertices);
+    for(int i=0; i<mesh->mNumVertices; i++) {
+        aiVector3D coords;
+        if(mesh->mTextureCoords[0]) coords = mesh->mTextureCoords[0][i];
         jfloat buf[2];
         buf[0] = coords.x;
         buf[1] = coords.y;
@@ -244,7 +294,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIindices(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
     jintArray result;
     result = env->NewIntArray(3 * mesh->mNumFaces);
@@ -284,7 +334,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImeshName(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
     return env->NewStringUTF(mesh->mName.C_Str());
 }
@@ -295,11 +345,11 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIambientRGBA(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
 
     aiColor4D ambient;
-    jfloat buf[] = {1,1,1,1};
+    jfloat buf[] = {0,0,0,0};
     jfloatArray result;
     result = env->NewFloatArray(4);
     if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_AMBIENT, &ambient)) {
@@ -318,11 +368,11 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdiffuseRGBA(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
 
     aiColor4D diffuse;
-    jfloat buf[] = {1,1,1,1};
+    jfloat buf[] = {0,0,0,0};
     jfloatArray result;
     result = env->NewFloatArray(4);
     if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse)) {
@@ -341,11 +391,11 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIspecularRGBA(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
 
     aiColor4D specular;
-    jfloat buf[] = {1,1,1,1};
+    jfloat buf[] = {0,0,0,0};
     jfloatArray result;
     result = env->NewFloatArray(4);
     if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_SPECULAR, &specular)) {
@@ -364,12 +414,11 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIopacity(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
 
     float opacity;
-    material->Get(AI_MATKEY_OPACITY, opacity);
-    return opacity;
+    return (AI_SUCCESS == material->Get(AI_MATKEY_OPACITY, opacity) ? opacity : 1);
 }
 
 extern "C" JNIEXPORT jfloat JNICALL
@@ -378,12 +427,11 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIshininess(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
 
     float shininess;
-    material->Get(AI_MATKEY_SHININESS,shininess);
-    return shininess;
+    return (AI_SUCCESS == material->Get(AI_MATKEY_SHININESS, shininess) ? shininess : 0.3f);
 }
 
 
@@ -393,12 +441,11 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIstrength(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
 
     float strength;
-    material->Get(AI_MATKEY_SHININESS_STRENGTH,strength);
-    return strength;
+    return (AI_SUCCESS == material->Get(AI_MATKEY_SHININESS_STRENGTH, strength) ? strength : 1);
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
@@ -407,11 +454,134 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdoubleSided(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
-    aiScene * scene = reinterpret_cast<aiScene *>(jScene);
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
 
     bool twoSided;
-    material->Get(AI_MATKEY_TWOSIDED,twoSided);
-    return twoSided;
+    return (AI_SUCCESS == material->Get(AI_MATKEY_TWOSIDED, twoSided) ? twoSided : false);
 }
 
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIambientName(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    size_t index = jIndex;
+    aiMaterial *mtl = scene->mMaterials[index];
+    aiString path;
+
+    if(AI_SUCCESS != mtl->GetTexture(aiTextureType_AMBIENT, 0, &path)) {
+        path = "";
+    }
+    return env->NewStringUTF(path.C_Str());
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdiffuseName(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    size_t index = jIndex;
+    aiMaterial *mtl = scene->mMaterials[index];
+    aiString path;
+
+    if(AI_SUCCESS != mtl->GetTexture(aiTextureType_DIFFUSE, 0, &path)) {
+        path = "";
+    }
+    return env->NewStringUTF(path.C_Str());
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIspecularName(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    size_t index = jIndex;
+    aiMaterial *mtl = scene->mMaterials[index];
+    aiString path;
+
+    if(AI_SUCCESS != mtl->GetTexture(aiTextureType_SPECULAR, 0, &path)) {
+        path = "";
+    }
+    return env->NewStringUTF(path.C_Str());
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedLabel(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jstring labelObj) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+
+    const char *pFile = env->GetStringUTFChars(labelObj, 0);
+    const aiTexture * embed = scene->GetEmbeddedTexture(pFile);
+    return env->NewStringUTF(embed->mFilename.C_Str());
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedLength(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jstring labelObj) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+
+    const char *pFile = env->GetStringUTFChars(labelObj, 0);
+    const aiTexture * embed = scene->GetEmbeddedTexture(pFile);
+    return embed->mWidth;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedOffset(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jstring labelObj) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+
+    const char *pFile = env->GetStringUTFChars(labelObj, 0);
+    const aiTexture * embed = scene->GetEmbeddedTexture(pFile);
+    return embed->mHeight;
+}
+
+unsigned texel2argb(aiTexel texel) {
+    unsigned r = texel.r;
+    unsigned g = texel.g;
+    unsigned b = texel.b;
+    unsigned a = texel.a;
+    a <<= 24u;
+    r <<= 16u;
+    g <<= 8u;
+    return ( a | r | g | b );
+}
+
+extern "C" JNIEXPORT jbyteArray JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedBytes(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jstring labelObj) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+
+    const char *pFile = env->GetStringUTFChars(labelObj, 0);
+    const aiTexture * embed = scene->GetEmbeddedTexture(pFile);
+
+    size_t length = embed->mWidth;
+    off_t  offset = embed->mHeight;
+    jbyte * data = (jbyte *)reinterpret_cast<uint8_t *>(embed->pcData);
+
+    jbyteArray result;
+    result = env->NewByteArray(length);
+    env->SetByteArrayRegion(result,offset,length,data);
+    return result;
+}

@@ -2,6 +2,7 @@ package org.rajawali.rajawaliassimpbridge;
 
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.util.Log;
 
 import org.rajawali3d.Object3D;
 import org.rajawali3d.materials.Material;
@@ -57,6 +58,8 @@ public class Bridge {
                 Math.round(0xff*rgba[2])
         );
 
+        Log.i("Bridge.getMaterialAt", getJNImaterialName(scene, index));
+
         Material material = new Material();
         material.setColor(getJNIdiffuseRGBA(scene, index));
         material.setColorInfluence(getJNIopacity(scene, index));
@@ -66,6 +69,21 @@ public class Bridge {
         material.enableLighting(true);
         return material;
     }
+
+    static float getOpacity(long scene, int index) { return getJNIopacity(scene, index); }
+
+    static boolean hasAmbientTexture(long scene, int index) { return hasJNIdiffuseTexture(scene, index); }
+    static boolean hasDiffuseTexture(long scene, int index) { return hasJNIdiffuseTexture(scene, index); }
+    static boolean hasSpecularTexture(long scene, int index) { return hasJNIdiffuseTexture(scene, index); }
+
+    static String getAmbientName(long scene, int index) { return getJNIambientName(scene, index); }
+    static String getDiffuseName(long scene, int index) { return getJNIdiffuseName(scene,index); }
+    static String getSpecularName(long scene, int index) { return getJNIspecularName(scene, index); }
+
+    static String getEmbeddedLabel(long scene, String label) { return getJNIembeddedLabel(scene,label); }
+    static int getEmbeddedOffset(long scene, String label) { return getJNIembeddedOffset(scene,label); }
+    static int getEmbeddedLength(long scene, String label) { return getJNIembeddedLength(scene,label); }
+    static byte[] getEmbeddedBytes(long scene, String label) { return getJNIembeddedBytes(scene,label); }
 
     //
     // native methods implemented in the packaged 'bridge' library.
@@ -100,4 +118,17 @@ public class Bridge {
     private static native float getJNIshininess(long scene, int index);
     private static native float getJNIstrength(long scene, int index);
     private static native boolean getJNIdoubleSided(long scene, int index);
+    private static native String getJNIdiffuseName(long scene, int index);
+    private static native String getJNIspecularName(long scene, int index);
+    private static native String getJNIambientName(long scene, int index);
+    private static native String getJNImaterialName(long scene, int index);
+    private static native boolean hasJNIambientTexture(long scene, int index);
+    private static native boolean hasJNIdiffuseTexture(long scene, int index);
+    private static native boolean hasJNIspecularTexture(long scene, int index);
+
+    // methods indexed by label
+    private static native String getJNIembeddedLabel(long scene, String label);
+    private static native int getJNIembeddedOffset(long scene, String label);
+    private static native int getJNIembeddedLength(long scene,  String label);
+    private static native byte[] getJNIembeddedBytes(long scene,  String label);
 }

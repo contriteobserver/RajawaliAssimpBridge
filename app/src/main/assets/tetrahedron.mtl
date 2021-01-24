@@ -1,40 +1,51 @@
-
 newmtl Cyan
 Ns 256
-Ka 1 1 1
-Kd 0 0.75 0.75
-Ks 0.50 0.50 0.50
-Ke 0 0 0
-Ni 1.45
-d 1
+Ka 1.0 1.0 1.0
+Kd 0.0 0.75 0.75
+Ks 0.5 0.5 0.5
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
 illum 2
+map_Ka ripples.png
+map_Kd ripples.png
+map_Ks ripples.png
 
 newmtl Green
 Ns 256
-Ka 1 1 1
-Kd 0 0.25 0
-Ks 0.50 0.50 0.50
-Ke 0 0 0
-Ni 1.45
-d 1
+Ka 1.0 1.0 1.0
+Kd 0.0 0.25 0.0
+Ks 0.5 0.5 0.5
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
 illum 2
+map_Ka ripples.png
+map_Kd ripples.png
+map_Ks ripples.png
 
 newmtl Orange
 Ns 256
-Ka 1 1 1
-Kd 0.75 0.50 0
-Ks 0.50 0.50 0.50
-Ke 0 0 0
-Ni 1.45
-d 1
+Ka 1.0 1.0 1.0
+Kd 0.75 0.5 0.0
+Ks 0.5 0.5 0.5
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
 illum 2
+map_Ka ripples.png
+map_Kd ripples.png
+map_Ks ripples.png
 
 newmtl Red
 Ns 256
-Ka 1 1 1
-Kd 0.80 0 0
-Ks 0.50 0.50 0.50
-Ke 0 0 0
-Ni 1.45
-d 1
+Ka 1.0 1.0 1.0
+Kd 1.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
 illum 2
+map_Ka ripples.png
+map_Kd ripples.png
+map_Ks ripples.png
