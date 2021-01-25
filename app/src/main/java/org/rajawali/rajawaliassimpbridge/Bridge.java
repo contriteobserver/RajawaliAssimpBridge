@@ -10,13 +10,14 @@ import org.rajawali3d.materials.methods.DiffuseMethod;
 import org.rajawali3d.materials.methods.SpecularMethod;
 
 public class Bridge {
+    private static final aiShadingModel[] ShadingModelValues = aiShadingModel.values();
 
     // Used to load the bridge library on application startup.
     static {
         System.loadLibrary("bridgeJNI");
     }
 
-    static String getVersion() { return getJNIversion(); }
+    static String getVersion() { return getJNIversion();}
     static long createImporter(AssetManager assetManager) { return createJNIimporter(assetManager); }
     static long readFile(long importer, String path) { return readJNIfile(importer, path); }
     static String errorMessage(long importer) { return errorJNImessage(importer); }
@@ -58,7 +59,9 @@ public class Bridge {
                 Math.round(0xff*rgba[2])
         );
 
-        Log.i("Bridge.getMaterialAt", getJNImaterialName(scene, index));
+        Log.i("Bridge.getMaterialAt", "name: " + getJNImaterialName(scene, index));
+        Log.i("Bridge.getMaterialAt", "shading model: " + ShadingModelValues[getJNIshadingModel(scene, index)]);
+        Log.i("Bridge.getMaterialAt", "enable wireframe: " + enableJNIwireframe(scene, index));
 
         Material material = new Material();
         material.setColor(getJNIdiffuseRGBA(scene, index));
@@ -71,6 +74,7 @@ public class Bridge {
     }
 
     static float getOpacity(long scene, int index) { return getJNIopacity(scene, index); }
+    static float getTransparency(long scene, int index) { return getJNItransparency(scene, index); }
 
     static boolean hasAmbientTexture(long scene, int index) { return hasJNIdiffuseTexture(scene, index); }
     static boolean hasDiffuseTexture(long scene, int index) { return hasJNIdiffuseTexture(scene, index); }
@@ -111,10 +115,13 @@ public class Bridge {
     private static native int getJNImaterialIndex(long scene, int index);
 
     // methods indexed by material
+    private static native int getJNIshadingModel(long scene, int index);
+    private static native boolean enableJNIwireframe(long scene, int index);
     private static native float[] getJNIambientRGBA(long scene, int index);
     private static native float[] getJNIdiffuseRGBA(long scene, int index);
     private static native float[] getJNIspecularRGBA(long scene, int index);
     private static native float getJNIopacity(long scene, int index);
+    private static native float getJNItransparency(long scene, int index);
     private static native float getJNIshininess(long scene, int index);
     private static native float getJNIstrength(long scene, int index);
     private static native boolean getJNIdoubleSided(long scene, int index);
@@ -131,4 +138,17 @@ public class Bridge {
     private static native int getJNIembeddedOffset(long scene, String label);
     private static native int getJNIembeddedLength(long scene,  String label);
     private static native byte[] getJNIembeddedBytes(long scene,  String label);
+
+    public enum aiShadingModel {
+        Flat,
+        Gouraud,
+        Phong,
+        Blinn,
+        Toon,
+        OrenNayar,
+        Minnaert ,
+        CookTorrance,
+        NoShading,
+        Fresnel,
+    };
 }

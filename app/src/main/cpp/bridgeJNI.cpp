@@ -187,6 +187,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIspecularTexture(
 
     return(AI_SUCCESS == mtl->GetTexture(aiTextureType_DIFFUSE, 0, &path));
 }
+
 extern "C" JNIEXPORT jfloatArray JNICALL
 Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIvertices(
         JNIEnv* env,
@@ -328,6 +329,32 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImeshName(
     return env->NewStringUTF(mesh->mName.C_Str());
 }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIshadingModel(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    int model;
+    return (AI_SUCCESS == material->Get(AI_MATKEY_SHADING_MODEL, model) ? model : 0);
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_enableJNIwireframe(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    bool enableWireframe;
+    return (AI_SUCCESS == material->Get(AI_MATKEY_ENABLE_WIREFRAME, enableWireframe) ? enableWireframe : false);
+}
+
 extern "C" JNIEXPORT jfloatArray JNICALL
 Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIambientRGBA(
         JNIEnv* env,
@@ -408,6 +435,19 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIopacity(
 
     float opacity;
     return (AI_SUCCESS == material->Get(AI_MATKEY_OPACITY, opacity) ? opacity : 1);
+}
+
+extern "C" JNIEXPORT jfloat JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNItransparency(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * material = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+
+    float transparancy;
+    return (AI_SUCCESS == material->Get(AI_MATKEY_COLOR_TRANSPARENT, transparancy) ? transparancy : 1);
 }
 
 extern "C" JNIEXPORT jfloat JNICALL
