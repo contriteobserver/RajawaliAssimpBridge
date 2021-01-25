@@ -3,7 +3,6 @@ package org.rajawali.rajawaliassimpbridge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +13,6 @@ import org.rajawali3d.animation.Animation;
 import org.rajawali3d.animation.Animation3D;
 import org.rajawali3d.animation.RotateOnAxisAnimation;
 import org.rajawali3d.materials.Material;
-import org.rajawali3d.materials.textures.ATexture;
 import org.rajawali3d.math.vector.Vector3;
 import org.rajawali3d.renderer.Renderer;
 import org.rajawali3d.view.SurfaceView;
@@ -61,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
                 Object3D obj = new Object3D();
                 getCurrentScene().addChild(obj);
 
-                AssetManager manager = getAssets();
                 if(scene==0) {
                     Log.e(getLocalClassName() + ".readFile", Bridge.errorMessage(scene));
                 } else {

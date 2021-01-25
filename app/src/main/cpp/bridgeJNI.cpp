@@ -38,7 +38,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_readJNIfile(
         jstring pathObj) {
     auto * importer = reinterpret_cast<Assimp::Importer *>(jImporter);
 
-    const char *pFile = env->GetStringUTFChars(pathObj, 0);
+    const char *pFile = env->GetStringUTFChars(pathObj, nullptr);
     const aiScene* scene = importer->ReadFile( pFile,
                                           aiProcess_CalcTangentSpace       |
                                           aiProcess_Triangulate            |
@@ -74,7 +74,6 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_destroyJNIimporter(
         jlong jImporter) {
     auto * importer = reinterpret_cast<Assimp::Importer *>(jImporter);
     delete importer;
-    return;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -85,16 +84,6 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNImeshes(
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
     return scene->mNumMeshes;
-}
-
-extern "C" JNIEXPORT jlong JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNImaterials(
-        JNIEnv* env,
-        jclass /* this */,
-        jlong jScene) {
-    auto * scene = reinterpret_cast<aiScene *>(jScene);
-
-    return scene->mNumMaterials;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -523,7 +512,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedLabel(
         jstring labelObj) {
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
-    const char *pFile = env->GetStringUTFChars(labelObj, 0);
+    const char *pFile = env->GetStringUTFChars(labelObj, nullptr);
     const aiTexture * embed = scene->GetEmbeddedTexture(pFile);
     return env->NewStringUTF(embed->mFilename.C_Str());
 }
@@ -536,7 +525,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedLength(
         jstring labelObj) {
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
-    const char *pFile = env->GetStringUTFChars(labelObj, 0);
+    const char *pFile = env->GetStringUTFChars(labelObj, nullptr);
     const aiTexture * embed = scene->GetEmbeddedTexture(pFile);
     return embed->mWidth;
 }
@@ -549,20 +538,9 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedOffset(
         jstring labelObj) {
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
-    const char *pFile = env->GetStringUTFChars(labelObj, 0);
+    const char *pFile = env->GetStringUTFChars(labelObj, nullptr);
     const aiTexture * embed = scene->GetEmbeddedTexture(pFile);
     return embed->mHeight;
-}
-
-unsigned texel2argb(aiTexel texel) {
-    unsigned r = texel.r;
-    unsigned g = texel.g;
-    unsigned b = texel.b;
-    unsigned a = texel.a;
-    a <<= 24u;
-    r <<= 16u;
-    g <<= 8u;
-    return ( a | r | g | b );
 }
 
 extern "C" JNIEXPORT jbyteArray JNICALL
@@ -573,12 +551,12 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedBytes(
         jstring labelObj) {
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
-    const char *pFile = env->GetStringUTFChars(labelObj, 0);
+    const char *pFile = env->GetStringUTFChars(labelObj, nullptr);
     const aiTexture * embed = scene->GetEmbeddedTexture(pFile);
 
     size_t length = embed->mWidth;
     off_t  offset = embed->mHeight;
-    jbyte * data = (jbyte *)reinterpret_cast<uint8_t *>(embed->pcData);
+    auto * data = (jbyte *)reinterpret_cast<uint8_t *>(embed->pcData);
 
     jbyteArray result;
     result = env->NewByteArray(length);

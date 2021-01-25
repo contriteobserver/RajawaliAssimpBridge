@@ -1,7 +1,6 @@
 package org.rajawali.rajawaliassimpbridge;
 
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.rajawali3d.materials.textures.ASingleTexture;
