@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 getCurrentScene().setBackgroundColor(Color.MAGENTA & Color.DKGRAY);
 
-                scene = Bridge.readFile(importer, "tetrahedron.dae");
+                scene = Bridge.readFile(importer, "tetrahedron.obj");
                 Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumMeshes(scene)+ " meshes");
 
                 Object3D obj = new Object3D();
@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                             AssimpTexture texture = new AssimpTexture(getAssets());
                             texture.loadDiffuseData(scene, Bridge.getMaterialIndex(scene, i));
                             material.addTexture(texture);
-                            material.setColorInfluence(0);
                         }
                         Object3D child = Bridge.getObjAt(scene, i);
                         child.setMaterial(material);
