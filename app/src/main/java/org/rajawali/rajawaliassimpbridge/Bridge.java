@@ -76,13 +76,15 @@ public class Bridge {
     static float getOpacity(long scene, int index) { return getJNIopacity(scene, index); }
     static float getTransparency(long scene, int index) { return getJNItransparency(scene, index); }
 
-    static boolean hasAmbientTexture(long scene, int index) { return hasJNIdiffuseTexture(scene, index); }
+    static boolean hasAmbientTexture(long scene, int index) { return hasJNIambientTexture(scene, index); }
     static boolean hasDiffuseTexture(long scene, int index) { return hasJNIdiffuseTexture(scene, index); }
-    static boolean hasSpecularTexture(long scene, int index) { return hasJNIdiffuseTexture(scene, index); }
+    static boolean hasSpecularTexture(long scene, int index) { return hasJNIspecularTexture(scene, index); }
+    static boolean hasNormalMap(long scene, int index) { return hasJNInormalMap(scene, index); }
 
     static String getAmbientName(long scene, int index) { return getJNIambientName(scene, index); }
     static String getDiffuseName(long scene, int index) { return getJNIdiffuseName(scene,index); }
     static String getSpecularName(long scene, int index) { return getJNIspecularName(scene, index); }
+    static String getNormalMapName(long scene, int index) { return getJNInormalMapName(scene, index); }
 
     static String getEmbeddedLabel(long scene, String label) { return getJNIembeddedLabel(scene,label); }
     static int getEmbeddedOffset(long scene, String label) { return getJNIembeddedOffset(scene,label); }
@@ -125,13 +127,15 @@ public class Bridge {
     private static native float getJNIshininess(long scene, int index);
     private static native float getJNIstrength(long scene, int index);
     private static native boolean getJNIdoubleSided(long scene, int index);
+    private static native String getJNImaterialName(long scene, int index);
+    private static native String getJNIambientName(long scene, int index);
     private static native String getJNIdiffuseName(long scene, int index);
     private static native String getJNIspecularName(long scene, int index);
-    private static native String getJNIambientName(long scene, int index);
-    private static native String getJNImaterialName(long scene, int index);
+    private static native String getJNInormalMapName(long scene, int index);
     private static native boolean hasJNIambientTexture(long scene, int index);
     private static native boolean hasJNIdiffuseTexture(long scene, int index);
     private static native boolean hasJNIspecularTexture(long scene, int index);
+    private static native boolean hasJNInormalMap(long scene, int index);
 
     // methods indexed by label
     private static native String getJNIembeddedLabel(long scene, String label);

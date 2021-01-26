@@ -17,6 +17,16 @@
             <source>ripples_png-surface</source>
           </sampler2D>
         </newparam>
+        <newparam sid="gridnormals_png-surface">
+          <surface type="2D">
+            <init_from>gridnormals_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="gridnormals_png-sampler">
+          <sampler2D>
+            <source>gridnormals_png-surface</source>
+          </sampler2D>
+        </newparam>
         <technique sid="common">
           <lambert>
             <emission>
@@ -30,6 +40,13 @@
               <float sid="ior">1.45</float>
             </index_of_refraction>
           </lambert>
+          <extra>
+            <technique>
+              <bump>
+                  <texture texture="gridnormals_png-sampler" texcoord="UVMap"/>
+              </bump>
+            </technique>
+          </extra>
         </technique>
       </profile_COMMON>
     </effect>
@@ -45,6 +62,16 @@
             <source>ripples_png-surface</source>
           </sampler2D>
         </newparam>
+        <newparam sid="gridnormals_png-surface">
+          <surface type="2D">
+            <init_from>gridnormals_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="gridnormals_png-sampler">
+          <sampler2D>
+            <source>gridnormals_png-surface</source>
+          </sampler2D>
+        </newparam>
         <technique sid="common">
           <lambert>
             <emission>
@@ -58,6 +85,13 @@
               <float sid="ior">1.45</float>
             </index_of_refraction>
           </lambert>
+          <extra>
+            <technique>
+              <bump>
+                  <texture texture="gridnormals_png-sampler" texcoord="UVMap"/>
+              </bump>
+            </technique>
+          </extra>
         </technique>
       </profile_COMMON>
     </effect>
@@ -73,6 +107,16 @@
             <source>ripples_png-surface</source>
           </sampler2D>
         </newparam>
+        <newparam sid="gridnormals_png-surface">
+          <surface type="2D">
+            <init_from>gridnormals_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="gridnormals_png-sampler">
+          <sampler2D>
+            <source>gridnormals_png-surface</source>
+          </sampler2D>
+        </newparam>
         <technique sid="common">
           <lambert>
             <emission>
@@ -86,6 +130,13 @@
               <float sid="ior">1.45</float>
             </index_of_refraction>
           </lambert>
+          <extra>
+            <technique>
+              <bump>
+                  <texture texture="gridnormals_png-sampler" texcoord="UVMap"/>
+              </bump>
+            </technique>
+          </extra>
         </technique>
       </profile_COMMON>
     </effect>
@@ -101,6 +152,16 @@
             <source>ripples_png-surface</source>
           </sampler2D>
         </newparam>
+        <newparam sid="gridnormals_png-surface">
+          <surface type="2D">
+            <init_from>gridnormals_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="gridnormals_png-sampler">
+          <sampler2D>
+            <source>gridnormals_png-surface</source>
+          </sampler2D>
+        </newparam>
         <technique sid="common">
           <lambert>
             <emission>
@@ -114,6 +175,13 @@
               <float sid="ior">1.45</float>
             </index_of_refraction>
           </lambert>
+          <extra>
+            <technique>
+              <bump>
+                  <texture texture="gridnormals_png-sampler" texcoord="UVMap"/>
+              </bump>
+            </technique>
+          </extra>
         </technique>
       </profile_COMMON>
     </effect>
@@ -121,6 +189,9 @@
   <library_images>
     <image id="ripples_png" name="ripples_png">
       <init_from>ripples.png</init_from>
+    </image>
+    <image id="gridnormals_png" name="gridnormals_png">
+      <init_from>gridnormals.png</init_from>
     </image>
   </library_images>
   <library_materials>

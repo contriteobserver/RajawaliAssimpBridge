@@ -83,7 +83,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNImeshes(
         jlong jScene) {
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
-    return scene->mNumMeshes;
+    return scene ? scene->mNumMeshes : 0;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -93,7 +93,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNItextures(
         jlong jScene) {
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
-    return scene->mNumTextures;
+    return scene ? scene->mNumTextures : 0;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -103,7 +103,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIcameras(
         jlong jScene) {
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
-    return scene->mNumCameras;
+    return scene ? scene->mNumCameras : 0;
 }
 
 
@@ -114,7 +114,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIlights(
         jlong jScene) {
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
-    return scene->mNumLights;
+    return scene ? scene->mNumLights : 0;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -124,7 +124,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIanimations(
         jlong jScene) {
     auto * scene = reinterpret_cast<aiScene *>(jScene);
 
-    return scene->mNumAnimations;
+    return scene ? scene->mNumAnimations : 0;
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -186,6 +186,19 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIspecularTexture(
     aiString path;
 
     return(AI_SUCCESS == mtl->GetTexture(aiTextureType_DIFFUSE, 0, &path));
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNInormalMap(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMaterial * mtl = scene->mMaterials[reinterpret_cast<int>(jIndex)];
+    aiString path;
+
+    return(AI_SUCCESS == mtl->GetTexture(aiTextureType_NORMALS, 0, &path));
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
@@ -539,6 +552,24 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIspecularName(
     aiString path;
 
     if(AI_SUCCESS != mtl->GetTexture(aiTextureType_SPECULAR, 0, &path)) {
+        path = "";
+    }
+    return env->NewStringUTF(path.C_Str());
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInormalMapName(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    size_t index = jIndex;
+    aiMaterial *mtl = scene->mMaterials[index];
+    aiString path;
+
+    if(AI_SUCCESS != mtl->GetTexture(aiTextureType_NORMALS, 0, &path)) {
         path = "";
     }
     return env->NewStringUTF(path.C_Str());

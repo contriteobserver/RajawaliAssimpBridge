@@ -12,6 +12,7 @@ import org.rajawali3d.Object3D;
 import org.rajawali3d.animation.Animation;
 import org.rajawali3d.animation.Animation3D;
 import org.rajawali3d.animation.RotateOnAxisAnimation;
+import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.materials.Material;
 import org.rajawali3d.math.vector.Vector3;
 import org.rajawali3d.renderer.Renderer;
@@ -53,20 +54,28 @@ public class MainActivity extends AppCompatActivity {
             try {
                 getCurrentScene().setBackgroundColor(Color.MAGENTA & Color.DKGRAY);
 
-                scene = Bridge.readFile(importer, "tetrahedron.obj");
-                Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumMeshes(scene)+ " meshes");
+                DirectionalLight key = new DirectionalLight(-5,-5,-5);
+                key.setPower(5/4f);
+                getCurrentScene().addLight(key);
 
                 Object3D obj = new Object3D();
                 getCurrentScene().addChild(obj);
 
+                scene = Bridge.readFile(importer, "tetrahedron.gltf");
                 if(scene==0) {
-                    Log.e(getLocalClassName() + ".readFile", Bridge.errorMessage(scene));
+                    Log.e(getLocalClassName() + ".readFile", Bridge.errorMessage(importer));
                 } else {
+                    Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumMeshes(scene)+ " meshes");
                     for(int i=0; i<Bridge.getNumMeshes(scene); i++) {
                         Material material = Bridge.getMaterialAt(scene, Bridge.getMaterialIndex(scene, i));
                         if(Bridge.hasDiffuseTexture(scene, Bridge.getMaterialIndex(scene, i))) {
                             AssimpTexture texture = new AssimpTexture(getAssets());
                             texture.loadDiffuseData(scene, Bridge.getMaterialIndex(scene, i));
+                            material.addTexture(texture);
+                        }
+                        if(Bridge.hasNormalMap(scene, Bridge.getMaterialIndex(scene, i))) {
+                            AssimpTexture texture = new AssimpTexture(getAssets());
+                            texture.loadNormalMap(scene, Bridge.getMaterialIndex(scene, i));
                             material.addTexture(texture);
                         }
                         Object3D child = Bridge.getObjAt(scene, i);

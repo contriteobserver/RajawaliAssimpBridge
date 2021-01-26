@@ -2,6 +2,7 @@ package org.rajawali.rajawaliassimpbridge;
 
 import android.content.res.AssetManager;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import org.rajawali3d.materials.textures.ASingleTexture;
 
@@ -28,8 +29,16 @@ class AssimpTexture extends ASingleTexture {
     public void loadDiffuseData(long scene, int i) throws IOException {
         mTextureType = TextureType.DIFFUSE;
         String assetName = Bridge.getDiffuseName(scene, i);
+        Log.i(getClass().getSimpleName(), "loading diffuse texture: " + assetName);
         loadData(scene, assetName);
         setInfluence(Bridge.getOpacity(scene,i));
+    }
+
+    public void loadNormalMap(long scene, int i) throws IOException {
+        mTextureType = TextureType.NORMAL;
+        String assetName = Bridge.getNormalMapName(scene, i);
+        Log.i(getClass().getSimpleName(), "loading normal map: " + assetName);
+        loadData(scene, assetName);
     }
 
     void loadData(long scene, String assetName) throws IOException {
