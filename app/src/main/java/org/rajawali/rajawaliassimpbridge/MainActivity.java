@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
                         ALight light = Bridge.getLightAt(scene, i);
                         getCurrentScene().addLight(light);
                     }
+                    if(Bridge.getNumLights(scene)==0) {
+                        DirectionalLight key = new DirectionalLight(-5,-5,-5);
+                        key.setPower(5/4f);
+                        getCurrentScene().addLight(key);
+                    }
 
                     Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumMeshes(scene)+ " meshes");
                     for(int i=0; i<Bridge.getNumMeshes(scene); i++) {
