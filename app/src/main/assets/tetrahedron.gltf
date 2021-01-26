@@ -2,6 +2,28 @@
     "asset" : {
         "version" : "2.0"
     },
+    "extensionsUsed" : [
+        "KHR_lights_punctual"
+    ],
+    "extensionsRequired" : [
+        "KHR_lights_punctual"
+    ],
+    "extensions" : {
+        "KHR_lights_punctual" : {
+            "lights" : [
+                {
+                    "color" : [
+                        1,
+                        1,
+                        1
+                    ],
+                    "intensity" : 1,
+                    "type" : "directional",
+                    "name" : "Sun"
+                }
+            ]
+        }
+    },
     "scene" : 0,
     "scenes" : [
         {
@@ -27,6 +49,23 @@
             ]
         },
         {
+            "extensions" : {
+                "KHR_lights_punctual" : {
+                    "light" : 0
+                }
+            },
+            "name" : "Sun_Orientation",
+            "rotation" : [
+                -0.7071067690849304,
+                0,
+                0,
+                0.7071067690849304
+            ]
+        },
+        {
+            "children" : [
+                2
+            ],
             "name" : "Sun",
             "translation" : [
                 5,

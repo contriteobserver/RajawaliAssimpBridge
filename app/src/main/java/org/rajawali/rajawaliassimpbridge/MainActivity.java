@@ -12,8 +12,10 @@ import org.rajawali3d.Object3D;
 import org.rajawali3d.animation.Animation;
 import org.rajawali3d.animation.Animation3D;
 import org.rajawali3d.animation.RotateOnAxisAnimation;
+import org.rajawali3d.lights.ALight;
 import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.materials.Material;
+import org.rajawali3d.math.Quaternion;
 import org.rajawali3d.math.vector.Vector3;
 import org.rajawali3d.renderer.Renderer;
 import org.rajawali3d.view.SurfaceView;
@@ -54,10 +56,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 getCurrentScene().setBackgroundColor(Color.MAGENTA & Color.DKGRAY);
 
-                DirectionalLight key = new DirectionalLight(-5,-5,-5);
-                key.setPower(5/4f);
-                getCurrentScene().addLight(key);
-
                 Object3D obj = new Object3D();
                 getCurrentScene().addChild(obj);
 
@@ -65,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
                 if(scene==0) {
                     Log.e(getLocalClassName() + ".readFile", Bridge.errorMessage(importer));
                 } else {
+                    Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumLights(scene)+ " lights");
+                    for(int i=0; i<Bridge.getNumLights(scene); i++) {
+                        ALight light = Bridge.getLightAt(scene, i);
+                        getCurrentScene().addLight(light);
+                    }
+
                     Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumMeshes(scene)+ " meshes");
                     for(int i=0; i<Bridge.getNumMeshes(scene); i++) {
                         Material material = Bridge.getMaterialAt(scene, Bridge.getMaterialIndex(scene, i));

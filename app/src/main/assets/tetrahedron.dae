@@ -4,6 +4,15 @@
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
+  <library_lights>
+    <light id="Sun-light" name="Sun">
+      <technique_common>
+        <directional>
+          <color sid="color">1 1 1</color>
+        </directional>
+      </technique_common>
+    </light>
+  </library_lights>
   <library_effects>
     <effect id="Red-effect">
       <profile_COMMON>
@@ -272,6 +281,10 @@
   </library_geometries>
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
+      <node id="Sun" name="Sun" type="NODE">
+        <matrix sid="transform">-0.7071068 -0.4082482 0.5773502 5 0.7071068 -0.4082482 0.5773502 5 0 0.8164966 0.5773502 5 0 0 0 1</matrix>
+        <instance_light url="#Sun-light"/>
+      </node>
       <node id="Tetrahedron" name="Tetrahedron" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#Tetrahedron-mesh" name="Tetrahedron">

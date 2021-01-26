@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.util.Log;
 
 import org.rajawali3d.Object3D;
+import org.rajawali3d.lights.ALight;
+import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.materials.Material;
 import org.rajawali3d.materials.methods.DiffuseMethod;
 import org.rajawali3d.materials.methods.SpecularMethod;
@@ -73,6 +75,21 @@ public class Bridge {
         return material;
     }
 
+    static ALight getLightAt(long scene, int index) {
+        float[] buf;
+        ALight light = null;
+        switch(getJNIlightType(scene, index)) {
+            default:
+                buf = getJNIlightDirection(scene, index);
+                light = new DirectionalLight(buf[0], buf[1], buf[2]);
+                buf = getJNIlightDiffuseRGB(scene, index);
+                light.setColor(buf[0], buf[1], buf[2]);
+                light.setPower(5/4f);
+                break;
+        }
+        return light;
+    }
+
     static float getOpacity(long scene, int index) { return getJNIopacity(scene, index); }
     static float getTransparency(long scene, int index) { return getJNItransparency(scene, index); }
 
@@ -136,6 +153,14 @@ public class Bridge {
     private static native boolean hasJNIdiffuseTexture(long scene, int index);
     private static native boolean hasJNIspecularTexture(long scene, int index);
     private static native boolean hasJNInormalMap(long scene, int index);
+
+    // methods indexed by light
+    private static native int getJNIlightType(long scene, int index);
+    private static native float[] getJNIlightDirection(long scene, int index);
+    private static native float[] getJNIlightPosition(long scene, int index);
+    private static native float[] getJNIlightAmbientRGB(long scene, int index);
+    private static native float[] getJNIlightDiffuseRGB(long scene, int index);
+    private static native float[] getJNIlightSpecularRGB(long scene, int index);
 
     // methods indexed by label
     private static native String getJNIembeddedLabel(long scene, String label);
