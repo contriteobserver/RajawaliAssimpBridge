@@ -10,6 +10,7 @@ illum 2
 map_Ka ripples.png
 map_Kd ripples.png
 map_Ks ripples.png
+map_Kn gridnormals.png
 
 newmtl Green
 Ns 256
@@ -23,6 +24,7 @@ illum 2
 map_Ka ripples.png
 map_Kd ripples.png
 map_Ks ripples.png
+map_Kn gridnormals.png
 
 newmtl Orange
 Ns 256
@@ -36,6 +38,7 @@ illum 2
 map_Ka ripples.png
 map_Kd ripples.png
 map_Ks ripples.png
+map_Kn gridnormals.png
 
 newmtl Red
 Ns 256
@@ -49,3 +52,5 @@ illum 2
 map_Ka ripples.png
 map_Kd ripples.png
 map_Ks ripples.png
+map_Kn gridnormals.png
+
