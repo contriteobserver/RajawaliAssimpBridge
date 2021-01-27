@@ -33,9 +33,16 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightDirection(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
+    aiQuaternion rotation;
+    aiVector3D position;
     auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiLight * light = scene->mLights[reinterpret_cast<int>(jIndex)];
-    aiVector3D dir = light->mDirection;
+    aiString name = aiString(light->mName);
+    aiNode * node = scene->mRootNode->FindNode(name.C_Str());
+    aiMatrix4x4 transform = node->mTransformation;
+    transform.DecomposeNoScaling (rotation,position);
+    rotation.Normalize();
+    aiVector3D dir = rotation.Rotate(light->mDirection);
     jfloat buf[] = { dir.x, dir.y, dir.z };
     jfloatArray result = env->NewFloatArray(3);
     env->SetFloatArrayRegion(result,0, 3, buf);
