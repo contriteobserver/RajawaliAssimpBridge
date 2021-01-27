@@ -82,6 +82,8 @@ public class Bridge {
             default:
                 buf = getJNIlightDirection(scene, index);
                 light = new DirectionalLight(buf[0], buf[1], buf[2]);
+                buf = getJNIlightPosition(scene, index);
+                light.setPosition(buf[0], buf[1], buf[2]);
                 buf = getJNIlightDiffuseRGB(scene, index);
                 light.setColor(buf[0], buf[1], buf[2]);
                 light.setPower(5/4f);

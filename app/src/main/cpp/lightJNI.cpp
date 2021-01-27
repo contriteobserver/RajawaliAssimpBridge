@@ -55,9 +55,16 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightPosition(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
+    aiQuaternion rotation;
+    aiVector3D position;
     auto * scene = reinterpret_cast<aiScene *>(jScene);
     aiLight * light = scene->mLights[reinterpret_cast<int>(jIndex)];
+    aiString name = aiString(light->mName);
+    aiNode * node = scene->mRootNode->FindNode(name.C_Str());
+    aiMatrix4x4 transform = node->mTransformation;
+    transform.DecomposeNoScaling (rotation,position);
     aiVector3D pos = light->mPosition;
+    pos.x += position.x; pos.y += position.y; pos.z += position.z;
     jfloat buf[] = { pos.x, pos.y, pos.z };
     jfloatArray result = env->NewFloatArray(3);
     env->SetFloatArrayRegion(result,0, 3, buf);
