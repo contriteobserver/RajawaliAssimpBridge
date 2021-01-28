@@ -91,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
                         child.setMaterial(material);
                         obj.addChild(child);
                     }
+
+                    Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumAnimations(scene)+ " animations");
+                    for(int i=0; i<Bridge.getNumAnimations(scene); i++) {
+                        Animation3D anim = Bridge.getAnimationAt(scene, i);
+                        //anim.play();
+                        ///getCurrentScene().registerAnimation(anim);
+                    }
+
                     Bridge.freeScene(importer);
                 }
 

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 import org.rajawali3d.Object3D;
+import org.rajawali3d.animation.Animation3D;
 import org.rajawali3d.lights.ALight;
 import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.materials.Material;
@@ -92,6 +93,14 @@ public class Bridge {
         return light;
     }
 
+    static Animation3D getAnimationAt(long scene, int index) {
+        Animation3D anim = null;
+        Log.i("Bridge.getAnimationAt", "name: " + getJNIanimationName(scene, index));
+        Log.i("Bridge.getAnimationAt", "duration: " + getJNIanimationDuration(scene, index));
+        Log.i("Bridge.getAnimationAt", "length: " + getJNIorientationKeyframes(scene, index).length/5);
+        return anim;
+    }
+
     static float getOpacity(long scene, int index) { return getJNIopacity(scene, index); }
     static float getTransparency(long scene, int index) { return getJNItransparency(scene, index); }
 
@@ -169,6 +178,16 @@ public class Bridge {
     private static native int getJNIembeddedOffset(long scene, String label);
     private static native int getJNIembeddedLength(long scene,  String label);
     private static native byte[] getJNIembeddedBytes(long scene,  String label);
+
+    // methods indexed by animation
+    private static native String getJNIanimationName(long scene, int index);
+    private static native double getJNIanimationDuration(long scene, int index);
+    private static native int getJNInumChannels(long scene, int index);
+    private static native int getJNInumMeshChannels(long scene, int index);
+    private static native int getJNInumMorphMeshChannels(long scene, int index);
+    private static native float[] getJNItranslationKeyframes(long scene, int index);
+    private static native float[] getJNIorientationKeyframes(long scene, int index);
+    private static native float[] getJNIscalingKeyframes(long scene, int index);
 
     public enum aiShadingModel {
         Flat,
