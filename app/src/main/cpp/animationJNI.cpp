@@ -121,9 +121,9 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIscalingKeyframes(
     aiVectorKey *keyframes = anim->mChannels[0]->mScalingKeys;
 
     jfloatArray result;
-    result = env->NewFloatArray(5 * length);
+    result = env->NewFloatArray(4 * length);
     for(int i=0; i<length; i++) {
-        jfloat buf[5];
+        jfloat buf[4];
         buf[0] = (float)(keyframes[i].mTime / anim->mTicksPerSecond);
         buf[1] = keyframes[i].mValue.x;
         buf[2] = keyframes[i].mValue.y;

@@ -5,12 +5,17 @@ import android.graphics.Color;
 import android.util.Log;
 
 import org.rajawali3d.Object3D;
-import org.rajawali3d.animation.Animation3D;
+import org.rajawali3d.animation.Animation;
+import org.rajawali3d.animation.AnimationGroup;
+import org.rajawali3d.animation.SplineTranslateAnimation3D;
+import org.rajawali3d.curves.CatmullRomCurve3D;
 import org.rajawali3d.lights.ALight;
 import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.materials.Material;
 import org.rajawali3d.materials.methods.DiffuseMethod;
 import org.rajawali3d.materials.methods.SpecularMethod;
+import org.rajawali3d.math.Quaternion;
+import org.rajawali3d.math.vector.Vector3;
 
 public class Bridge {
     private static final aiShadingModel[] ShadingModelValues = aiShadingModel.values();
@@ -93,12 +98,55 @@ public class Bridge {
         return light;
     }
 
-    static Animation3D getAnimationAt(long scene, int index) {
-        Animation3D anim = null;
+    static AnimationGroup getAnimationFor(Object3D obj, long scene, int index) {
+        AnimationGroup group = new AnimationGroup();
+
         Log.i("Bridge.getAnimationAt", "name: " + getJNIanimationName(scene, index));
         Log.i("Bridge.getAnimationAt", "duration: " + getJNIanimationDuration(scene, index));
-        Log.i("Bridge.getAnimationAt", "length: " + getJNIorientationKeyframes(scene, index).length/5);
-        return anim;
+        Log.i("Bridge.getAnimationAt", "translation length: " + getJNItranslationKeyframes(scene, index).length/4);
+        Log.i("Bridge.getAnimationAt", "orientation length: " + getJNIorientationKeyframes(scene, index).length/5);
+        Log.i("Bridge.getAnimationAt", "scaling length: " + getJNIscalingKeyframes(scene, index).length/4);
+
+        {
+            float Keyframes[] = getJNItranslationKeyframes(scene, index);
+            CatmullRomCurve3D spline = new CatmullRomCurve3D();
+            for(int i=0; i<Keyframes.length; i+=4) {
+                spline.addPoint(new Vector3(Keyframes[i+1], Keyframes[i+2], Keyframes[i+3]));
+            }
+            spline.isClosedCurve(true);
+            SplineTranslateAnimation3D translation = new SplineTranslateAnimation3D(spline);
+            translation.setDurationDelta(getJNIanimationDuration(scene, index));
+            translation.setTransformable3D(obj);
+            group.addAnimation(translation);
+        }
+        {
+            float Keyframes[] = getJNIorientationKeyframes(scene, index);
+            Path4D spline = new Path4D();
+            for(int i=0; i<Keyframes.length; i+=5) {
+                spline.addPoint(new Quaternion(Keyframes[i+1], Keyframes[i+2], Keyframes[i+3], Keyframes[i+4]));
+            }
+            spline.isClosedCurve(true);
+            SplineOrientationAnimation3D translation = new SplineOrientationAnimation3D(spline);
+            translation.setDurationDelta(getJNIanimationDuration(scene, index));
+            translation.setTransformable3D(obj);
+            group.addAnimation(translation);
+        }
+        {
+            float Keyframes[] = getJNIscalingKeyframes(scene, index);
+            CatmullRomCurve3D spline = new CatmullRomCurve3D();
+            for(int i=0; i<Keyframes.length; i+=4) {
+                spline.addPoint(new Vector3(Keyframes[i+1], Keyframes[i+2], Keyframes[i+3]));
+            }
+            spline.isClosedCurve(true);
+            SplineScalingAnimation3D scaling = new SplineScalingAnimation3D(spline);
+            scaling.setDurationDelta(getJNIanimationDuration(scene, index));
+            scaling.setTransformable3D(obj);
+            group.addAnimation(scaling);
+        }
+
+        group.setDurationDelta(getJNIanimationDuration(scene, index));
+        group.setRepeatMode(Animation.RepeatMode.INFINITE);
+        return group;
     }
 
     static float getOpacity(long scene, int index) { return getJNIopacity(scene, index); }

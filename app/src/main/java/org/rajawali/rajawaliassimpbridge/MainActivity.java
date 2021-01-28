@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import org.rajawali3d.Object3D;
 import org.rajawali3d.animation.Animation;
 import org.rajawali3d.animation.Animation3D;
+import org.rajawali3d.animation.AnimationGroup;
 import org.rajawali3d.animation.RotateOnAxisAnimation;
 import org.rajawali3d.lights.ALight;
 import org.rajawali3d.lights.DirectionalLight;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 Object3D obj = new Object3D();
                 getCurrentScene().addChild(obj);
 
-                scene = Bridge.readFile(importer, "tetrahedron.gltf");
+                scene = Bridge.readFile(importer, "tetrahedron01.gltf");
                 if(scene==0) {
                     Log.e(getLocalClassName() + ".readFile", Bridge.errorMessage(importer));
                 } else {
@@ -94,20 +95,21 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumAnimations(scene)+ " animations");
                     for(int i=0; i<Bridge.getNumAnimations(scene); i++) {
-                        Animation3D anim = Bridge.getAnimationAt(scene, i);
-                        //anim.play();
-                        ///getCurrentScene().registerAnimation(anim);
+                        AnimationGroup anim = Bridge.getAnimationFor(obj, scene, i);
+                        anim.play();
+                        getCurrentScene().registerAnimation(anim);
+                    }
+                    if(Bridge.getNumAnimations(scene)==0) {
+                        Animation3D anim = new RotateOnAxisAnimation(Vector3.Axis.Y, 360);
+                        anim.setTransformable3D(obj);
+                        anim.setDurationDelta(9);
+                        anim.setRepeatMode(Animation.RepeatMode.INFINITE);
+                        anim.play();
+                        getCurrentScene().registerAnimation(anim);
                     }
 
                     Bridge.freeScene(importer);
                 }
-
-                Animation3D anim = new RotateOnAxisAnimation(Vector3.Axis.Y, 360);
-                anim.setTransformable3D(obj);
-                anim.setDurationDelta(9);
-                anim.setRepeatMode(Animation.RepeatMode.INFINITE);
-                anim.play();
-                getCurrentScene().registerAnimation(anim);
 
                 getCurrentCamera().setPosition(5,3,-4);
                 getCurrentCamera().setLookAt(Vector3.ZERO);
