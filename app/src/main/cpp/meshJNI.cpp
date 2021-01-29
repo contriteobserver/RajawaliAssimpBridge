@@ -156,4 +156,39 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImeshName(
     return env->NewStringUTF(mesh->mName.C_Str());
 }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumAnimeshes(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jIndex)];
+    return mesh->mNumAnimMeshes;
+}
 
+extern "C" JNIEXPORT jfloatArray JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIanimeshVertices(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jMeshIndex,
+        jint jAnimeshIndex) {
+    jfloatArray result;
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jMeshIndex)];
+    if(mesh->mNumAnimMeshes < reinterpret_cast<int>(jAnimeshIndex)) return result = env->NewFloatArray(0);
+    if(reinterpret_cast<int>(jAnimeshIndex) < 0) return result = env->NewFloatArray(0);
+
+    aiAnimMesh * animesh = mesh->mAnimMeshes[reinterpret_cast<int>(jAnimeshIndex)];
+    result = env->NewFloatArray(3 * animesh->mNumVertices);
+    for(int i=0; i<animesh->mNumVertices; i++) {
+        aiVector3D vertex = animesh->mVertices[i];
+        jfloat buf[3];
+        buf[0] = vertex.x;
+        buf[1] = vertex.y;
+        buf[2] = vertex.z;
+        env->SetFloatArrayRegion(result,3*i,3, buf);
+    }
+    return result;
+}

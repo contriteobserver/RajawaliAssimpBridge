@@ -137,7 +137,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIscalingKeyframes(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumShapeKeys(
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumMorphKeyFrames(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -153,23 +153,42 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumShapeKeys(
 }
 
 extern "C" JNIEXPORT jintArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIshapeKey(
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImorphVertices(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
-        jint jAnimation,
         jint jIndex) {
     jintArray result;
     auto *scene = reinterpret_cast<aiScene *>(jScene);
-    aiAnimation *anim = scene->mAnimations[reinterpret_cast<int>(jAnimation)];
+    aiAnimation *anim = scene->mAnimations[reinterpret_cast<int>(jIndex)];
     if(jIndex > anim->mMorphMeshChannels[0]->mNumKeys) return result = env->NewIntArray(0);
     if(jIndex<0) return result = env->NewIntArray(0);
 
-    aiMeshMorphKey keyFrame = anim->mMorphMeshChannels[0]->mKeys[jIndex];
-    result = env->NewIntArray(keyFrame.mNumValuesAndWeights);
-    for(int i=0; i<keyFrame.mNumValuesAndWeights; i++) {
-        unsigned int data = keyFrame.mValues[i];
-        env->SetIntArrayRegion(result, i, 1, reinterpret_cast<const jint *>(&data));
+    jsize length = anim->mMorphMeshChannels[0]->mNumKeys;
+    aiMeshMorphKey *keyframes = anim->mMorphMeshChannels[0]->mKeys;
+    result = env->NewIntArray(length);
+    for(int i=0; i<length; i++) {
+        env->SetIntArrayRegion(result, i,1, reinterpret_cast<jint *>(&(keyframes[i].mValues[0])));
     }
     return result;
 }
+
+extern "C" JNIEXPORT jdoubleArray JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImorphVertexWeights(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    jdoubleArray result;
+    auto *scene = reinterpret_cast<aiScene *>(jScene);
+    aiAnimation *anim = scene->mAnimations[reinterpret_cast<int>(jIndex)];
+    if(jIndex > anim->mMorphMeshChannels[0]->mNumKeys) return env->NewDoubleArray(0);
+    if(jIndex<0) result = env->NewDoubleArray(0);
+
+    jsize length = anim->mMorphMeshChannels[0]->mNumKeys;
+    aiMeshMorphKey *keyframes = anim->mMorphMeshChannels[0]->mKeys;
+    result = env->NewDoubleArray(length);
+    for(int i=0; i<length; i++) {
+        env->SetDoubleArrayRegion(result, i,1, reinterpret_cast<jdouble *>(&(keyframes[i].mWeights[0])));
+    }
+    return result;}

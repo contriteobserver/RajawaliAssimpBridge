@@ -107,7 +107,8 @@ public class Bridge {
         Log.i("Bridge.getAnimationAt", "translation length: " + getJNItranslationKeyframes(scene, index).length/4);
         Log.i("Bridge.getAnimationAt", "orientation length: " + getJNIorientationKeyframes(scene, index).length/5);
         Log.i("Bridge.getAnimationAt", "scaling length: " + getJNIscalingKeyframes(scene, index).length/4);
-        Log.i("Bridge.getAnimationAt", "shape key length: " + getJNInumShapeKeys(scene, index));
+        Log.i("Bridge.getAnimationAt", "morph poses: " + getJNInumAnimeshes(scene, index));
+        Log.i("Bridge.getAnimationAt", "morph keyframe length: " + getJNInumMorphKeyFrames(scene, index));
 
         keyFrames = getJNItranslationKeyframes(scene, index);
         if(keyFrames.length > 0) {
@@ -146,6 +147,14 @@ public class Bridge {
             scaling.setDurationDelta(getJNIanimationDuration(scene, index));
             scaling.setTransformable3D(obj);
             group.addAnimation(scaling);
+        }
+
+        int numKeyFrames = getJNInumMorphKeyFrames(scene, index);
+        if(numKeyFrames > 0) {
+            int vertices[] = getJNImorphVertices(scene, index);
+            double weights[]  = getJNImorphVertexWeights(scene, index);
+            Log.i("Bridge.getAnimationAt", "morph vertices: " + vertices);
+            Log.i("Bridge.getAnimationAt", "morph vertices: " + weights);
         }
 
         group.setDurationDelta(getJNIanimationDuration(scene, index));
@@ -195,6 +204,10 @@ public class Bridge {
     private static native int[] getJNIindices(long scene, int index);
     private static native String getJNImeshName(long scene, int index);
     private static native int getJNImaterialIndex(long scene, int index);
+    private static native int getJNInumAnimeshes(long scene, int index);
+
+    // methods indexed by animesh
+    private static native float[] getJNIanimeshVertices(long scene, int meshIndex, int animeshIndex);
 
     // methods indexed by material
     private static native int getJNIshadingModel(long scene, int index);
@@ -240,10 +253,11 @@ public class Bridge {
     private static native float[] getJNItranslationKeyframes(long scene, int animation);
     private static native float[] getJNIorientationKeyframes(long scene, int animation);
     private static native float[] getJNIscalingKeyframes(long scene, int animation);
-    private static native int getJNInumShapeKeys(long scene, int animation);
+    private static native int getJNInumMorphKeyFrames(long scene, int animation);
 
     // methods indexed by key
-    private static native float[] getJNIshapeKey(long scene, int animation, int index);
+    private static native int[] getJNImorphVertices(long scene, int animation);
+    private static native double[] getJNImorphVertexWeights(long scene, int animation);
 
     public enum aiShadingModel {
         Flat,

@@ -55,13 +55,13 @@ public class Path3D implements ICurve3D {
 
         int prev = (int)Math.floor(t*getNumPoints());
         int next = prev+1;
-        double tween = (prev-t*getNumPoints());
+        double tween = t*getNumPoints()-prev;
         if(next < getNumPoints()) {
-            result.setAll(mix(getPoint(next), getPoint(prev), tween));
+            result.setAll(mix(getPoint(prev), getPoint(next), tween));
             mCurrentTangent.subtractAndSet(getPoint(next), getPoint(prev));
         } else {
             if(mIsClosed) {
-                result.setAll(mix(getPoint(0), getPoint(getNumPoints()-1), tween));
+                result.setAll(mix(getPoint(getNumPoints()-1), getPoint(0),  tween));
                 mCurrentTangent.subtractAndSet(getPoint(0), getPoint(getNumPoints()-1));
             } else {
                 result.setAll(getPoint(getNumPoints()-1));
