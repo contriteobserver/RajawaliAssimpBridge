@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 Object3D obj = new Object3D();
                 getCurrentScene().addChild(obj);
 
-                scene = Bridge.readFile(importer, "tetrahedron.dae");
+                scene = Bridge.readFile(importer, "tetrahedron1.gltf");
                 if(scene==0) {
                     Log.e(getLocalClassName() + ".readFile", Bridge.errorMessage(importer));
                 } else {

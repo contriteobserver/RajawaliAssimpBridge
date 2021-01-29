@@ -66,12 +66,13 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNItranslationKeyframes(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
+    jfloatArray result;
     auto *scene = reinterpret_cast<aiScene *>(jScene);
     aiAnimation *anim = scene->mAnimations[reinterpret_cast<int>(jIndex)];
+    if(anim->mNumChannels<1) return result = env->NewFloatArray(0);
+
     jsize length = anim->mChannels[0]->mNumPositionKeys;
     aiVectorKey *keyframes = anim->mChannels[0]->mPositionKeys;
-
-    jfloatArray result;
     result = env->NewFloatArray(4 * length);
     for(int i=0; i<length; i++) {
         jfloat buf[4];
@@ -90,12 +91,13 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIorientationKeyframes(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
+    jfloatArray result;
     auto *scene = reinterpret_cast<aiScene *>(jScene);
     aiAnimation *anim = scene->mAnimations[reinterpret_cast<int>(jIndex)];
+    if(anim->mNumChannels<1) return result = env->NewFloatArray(0);
+
     jsize length = anim->mChannels[0]->mNumRotationKeys;
     aiQuatKey *keyframes = anim->mChannels[0]->mRotationKeys;
-
-    jfloatArray result;
     result = env->NewFloatArray(5 * length);
     for(int i=0; i<length; i++) {
         jfloat buf[5];
@@ -115,12 +117,13 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIscalingKeyframes(
         jclass /* this */,
         jlong jScene,
         jint jIndex) {
+    jfloatArray result;
     auto *scene = reinterpret_cast<aiScene *>(jScene);
     aiAnimation *anim = scene->mAnimations[reinterpret_cast<int>(jIndex)];
+    if(anim->mNumChannels<1) return result = env->NewFloatArray(0);
+
     jsize length = anim->mChannels[0]->mNumScalingKeys;
     aiVectorKey *keyframes = anim->mChannels[0]->mScalingKeys;
-
-    jfloatArray result;
     result = env->NewFloatArray(4 * length);
     for(int i=0; i<length; i++) {
         jfloat buf[4];
@@ -129,6 +132,44 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIscalingKeyframes(
         buf[2] = keyframes[i].mValue.y;
         buf[3] = keyframes[i].mValue.z;
         env->SetFloatArrayRegion(result,4*i,4, buf);
+    }
+    return result;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumShapeKeys(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jIndex) {
+    jfloatArray result;
+    auto *scene = reinterpret_cast<aiScene *>(jScene);
+    aiAnimation *anim = scene->mAnimations[reinterpret_cast<int>(jIndex)];
+    if(anim->mNumMorphMeshChannels<1) {
+        return 0;
+    } else {
+        return anim->mMorphMeshChannels[0]->mNumKeys;
+    }
+}
+
+extern "C" JNIEXPORT jintArray JNICALL
+Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIshapeKey(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jAnimation,
+        jint jIndex) {
+    jintArray result;
+    auto *scene = reinterpret_cast<aiScene *>(jScene);
+    aiAnimation *anim = scene->mAnimations[reinterpret_cast<int>(jAnimation)];
+    if(jIndex > anim->mMorphMeshChannels[0]->mNumKeys) return result = env->NewIntArray(0);
+    if(jIndex<0) return result = env->NewIntArray(0);
+
+    aiMeshMorphKey keyFrame = anim->mMorphMeshChannels[0]->mKeys[jIndex];
+    result = env->NewIntArray(keyFrame.mNumValuesAndWeights);
+    for(int i=0; i<keyFrame.mNumValuesAndWeights; i++) {
+        unsigned int data = keyFrame.mValues[i];
+        env->SetIntArrayRegion(result, i, 1, reinterpret_cast<const jint *>(&data));
     }
     return result;
 }

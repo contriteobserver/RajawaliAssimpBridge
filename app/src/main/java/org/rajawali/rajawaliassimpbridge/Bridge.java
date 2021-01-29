@@ -99,6 +99,7 @@ public class Bridge {
     }
 
     static AnimationGroup getAnimationFor(Object3D obj, long scene, int index) {
+        float keyFrames[];
         AnimationGroup group = new AnimationGroup();
 
         Log.i("Bridge.getAnimationAt", "name: " + getJNIanimationName(scene, index));
@@ -106,39 +107,42 @@ public class Bridge {
         Log.i("Bridge.getAnimationAt", "translation length: " + getJNItranslationKeyframes(scene, index).length/4);
         Log.i("Bridge.getAnimationAt", "orientation length: " + getJNIorientationKeyframes(scene, index).length/5);
         Log.i("Bridge.getAnimationAt", "scaling length: " + getJNIscalingKeyframes(scene, index).length/4);
+        Log.i("Bridge.getAnimationAt", "shape key length: " + getJNInumShapeKeys(scene, index));
 
-        {
-            float Keyframes[] = getJNItranslationKeyframes(scene, index);
-            CatmullRomCurve3D spline = new CatmullRomCurve3D();
-            for(int i=0; i<Keyframes.length; i+=4) {
-                spline.addPoint(new Vector3(Keyframes[i+1], Keyframes[i+2], Keyframes[i+3]));
+        keyFrames = getJNItranslationKeyframes(scene, index);
+        if(keyFrames.length > 0) {
+            Path3D path = new Path3D();
+            for(int i=0; i<keyFrames.length; i+=4) {
+                path.addPoint(new Vector3(keyFrames[i+1], keyFrames[i+2], keyFrames[i+3]));
             }
-            spline.isClosedCurve(true);
-            SplineTranslateAnimation3D translation = new SplineTranslateAnimation3D(spline);
+            path.isClosedCurve(true);
+            SplineTranslateAnimation3D translation = new SplineTranslateAnimation3D(path);
             translation.setDurationDelta(getJNIanimationDuration(scene, index));
             translation.setTransformable3D(obj);
             group.addAnimation(translation);
         }
-        {
-            float Keyframes[] = getJNIorientationKeyframes(scene, index);
-            Path4D spline = new Path4D();
-            for(int i=0; i<Keyframes.length; i+=5) {
-                spline.addPoint(new Quaternion(Keyframes[i+1], Keyframes[i+2], Keyframes[i+3], Keyframes[i+4]));
+
+        keyFrames = getJNIorientationKeyframes(scene, index);
+        if(keyFrames.length > 0) {
+            Path4D path = new Path4D();
+            for(int i=0; i<keyFrames.length; i+=5) {
+                path.addPoint(new Quaternion(keyFrames[i+1], keyFrames[i+2], keyFrames[i+3], keyFrames[i+4]));
             }
-            spline.isClosedCurve(true);
-            SplineOrientationAnimation3D translation = new SplineOrientationAnimation3D(spline);
+            path.isClosedCurve(true);
+            SplineOrientationAnimation3D translation = new SplineOrientationAnimation3D(path);
             translation.setDurationDelta(getJNIanimationDuration(scene, index));
             translation.setTransformable3D(obj);
             group.addAnimation(translation);
         }
-        {
-            float Keyframes[] = getJNIscalingKeyframes(scene, index);
-            CatmullRomCurve3D spline = new CatmullRomCurve3D();
-            for(int i=0; i<Keyframes.length; i+=4) {
-                spline.addPoint(new Vector3(Keyframes[i+1], Keyframes[i+2], Keyframes[i+3]));
+
+        keyFrames = getJNIscalingKeyframes(scene, index);
+        if(keyFrames.length > 0) {
+            Path3D path = new Path3D();
+            for(int i=0; i<keyFrames.length; i+=4) {
+                path.addPoint(new Vector3(keyFrames[i+1], keyFrames[i+2], keyFrames[i+3]));
             }
-            spline.isClosedCurve(true);
-            SplineScalingAnimation3D scaling = new SplineScalingAnimation3D(spline);
+            path.isClosedCurve(true);
+            SplineScalingAnimation3D scaling = new SplineScalingAnimation3D(path);
             scaling.setDurationDelta(getJNIanimationDuration(scene, index));
             scaling.setTransformable3D(obj);
             group.addAnimation(scaling);
@@ -228,14 +232,18 @@ public class Bridge {
     private static native byte[] getJNIembeddedBytes(long scene,  String label);
 
     // methods indexed by animation
-    private static native String getJNIanimationName(long scene, int index);
-    private static native double getJNIanimationDuration(long scene, int index);
-    private static native int getJNInumChannels(long scene, int index);
-    private static native int getJNInumMeshChannels(long scene, int index);
-    private static native int getJNInumMorphMeshChannels(long scene, int index);
-    private static native float[] getJNItranslationKeyframes(long scene, int index);
-    private static native float[] getJNIorientationKeyframes(long scene, int index);
-    private static native float[] getJNIscalingKeyframes(long scene, int index);
+    private static native String getJNIanimationName(long scene, int animation);
+    private static native double getJNIanimationDuration(long scene, int animation);
+    private static native int getJNInumChannels(long scene, int animation);
+    private static native int getJNInumMeshChannels(long scene, int animation);
+    private static native int getJNInumMorphMeshChannels(long scene, int animation);
+    private static native float[] getJNItranslationKeyframes(long scene, int animation);
+    private static native float[] getJNIorientationKeyframes(long scene, int animation);
+    private static native float[] getJNIscalingKeyframes(long scene, int animation);
+    private static native int getJNInumShapeKeys(long scene, int animation);
+
+    // methods indexed by key
+    private static native float[] getJNIshapeKey(long scene, int animation, int index);
 
     public enum aiShadingModel {
         Flat,

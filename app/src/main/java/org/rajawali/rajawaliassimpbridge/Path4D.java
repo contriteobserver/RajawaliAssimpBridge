@@ -43,10 +43,10 @@ public class Path4D implements ICurve4D {
         int next = prev+1;
         double tween = (prev-t*getNumPoints());
         if(next < getNumPoints()) {
-            result.slerp(getPoint(prev), getPoint(next), tween);
+            result.slerp(getPoint(next), getPoint(prev), tween);
         } else {
             if(mIsClosed) {
-                result.slerp(getPoint(getNumPoints()-1), getPoint(0), tween);
+                result.slerp(getPoint(0), getPoint(getNumPoints()-1), tween);
             } else {
                 result.setAll(getPoint(getNumPoints()-1));
             }

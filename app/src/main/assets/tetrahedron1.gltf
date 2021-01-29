@@ -168,7 +168,7 @@
     ],
     "materials" : [
         {
-            "doubleSided" : true,
+            "doubleSided" : false,
             "name" : "Cyan",
             "normalTexture" : {
                 "index" : 0
@@ -184,7 +184,7 @@
                     "index" : 1
                 },
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0.4000000059604645
+                "roughnessFactor" : 0.4
             }
         },
         {
@@ -204,7 +204,7 @@
                     "index" : 3
                 },
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0.4000000059604645
+                "roughnessFactor" : 0.4
             }
         },
         {
@@ -224,7 +224,7 @@
                     "index" : 5
                 },
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0.4000000059604645
+                "roughnessFactor" : 0.4
             }
         },
         {
@@ -244,7 +244,7 @@
                     "index" : 7
                 },
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0.4000000059604645
+                "roughnessFactor" : 0.4
             }
         }
     ],
