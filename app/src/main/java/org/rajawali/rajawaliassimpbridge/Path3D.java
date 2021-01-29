@@ -12,6 +12,7 @@ public class Path3D implements ICurve3D {
     protected List<Vector3> mPoints;
     protected int mNumPoints;
     protected boolean mIsClosed;
+    protected Vector3 mCurrentTangent = Vector3.NEG_Z.clone();
 
     public Path3D() {
         mPoints = Collections.synchronizedList(new CopyOnWriteArrayList<Vector3>());
@@ -57,23 +58,26 @@ public class Path3D implements ICurve3D {
         double tween = (prev-t*getNumPoints());
         if(next < getNumPoints()) {
             result.setAll(mix(getPoint(next), getPoint(prev), tween));
+            mCurrentTangent.subtractAndSet(getPoint(next), getPoint(prev));
         } else {
             if(mIsClosed) {
                 result.setAll(mix(getPoint(0), getPoint(getNumPoints()-1), tween));
+                mCurrentTangent.subtractAndSet(getPoint(0), getPoint(getNumPoints()-1));
             } else {
                 result.setAll(getPoint(getNumPoints()-1));
             }
         }
+        mCurrentTangent.normalize();
     }
 
     @Override
     public Vector3 getCurrentTangent() {
-        return null;
+        return mCurrentTangent;
     }
 
     @Override
     public void setCalculateTangents(boolean calculateTangents) {
-
+        // always calculating tangents
     }
 
     public void isClosedCurve(boolean closed)
