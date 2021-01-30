@@ -5,7 +5,7 @@
 #include <assimp/light.h>
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightName(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIlightName(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -17,7 +17,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightName(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightType(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIlightType(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -28,7 +28,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightType(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightDirection(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIlightDirection(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -50,7 +50,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightDirection(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightPosition(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIlightPosition(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -73,7 +73,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightPosition(
 
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightAmbientRGB(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIlightAmbientRGB(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -88,7 +88,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightAmbientRGB(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightDiffuseRGB(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIlightDiffuseRGB(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -103,7 +103,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightDiffuseRGB(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIlightSpecularRGB(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIlightSpecularRGB(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,

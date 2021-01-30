@@ -1,4 +1,4 @@
-package org.rajawali.rajawaliassimpbridge;
+package org.rajawali3d.rajawaliassimpbridge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 Object3D obj = new Object3D();
                 getCurrentScene().addChild(obj);
 
-                scene = Bridge.readFile(importer, "tetrahedron1.gltf");
+                scene = Bridge.readFile(importer, "tetrahedron2.gltf");
                 if(scene==0) {
                     Log.e(getLocalClassName() + ".readFile", Bridge.errorMessage(importer));
                 } else {

@@ -1,4 +1,4 @@
-package org.rajawali.rajawaliassimpbridge;
+package org.rajawali3d.rajawaliassimpbridge;
 
 /**
  * Copyright 2013 Dennis Ippel

@@ -1,4 +1,4 @@
-package org.rajawali.rajawaliassimpbridge;
+package org.rajawali3d.rajawaliassimpbridge;
 
 import org.rajawali3d.math.Quaternion;
 

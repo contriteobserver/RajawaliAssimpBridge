@@ -1,4 +1,4 @@
-package org.rajawali.rajawaliassimpbridge;
+package org.rajawali3d.rajawaliassimpbridge;
 
 import org.rajawali3d.curves.ICurve3D;
 import org.rajawali3d.math.vector.Vector3;

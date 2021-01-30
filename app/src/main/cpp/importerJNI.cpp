@@ -9,7 +9,7 @@
 #include "BundledAssetIOSystem.h"
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIversion(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIversion(
         JNIEnv* env,
         jclass /* this */) {
     std::string version =
@@ -20,7 +20,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIversion(
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_createJNIimporter(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_createJNIimporter(
         JNIEnv* env,
         jclass /* this */,
         jobject assetManager) {
@@ -31,7 +31,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_createJNIimporter(
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_readJNIfile(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_readJNIfile(
         JNIEnv* env,
         jclass /* this */,
         jlong jImporter,
@@ -49,7 +49,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_readJNIfile(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_errorJNImessage(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_errorJNImessage(
         JNIEnv* env,
         jclass, /* this */
         jlong jImporter) {
@@ -59,7 +59,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_errorJNImessage(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_freeJNIscene(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_freeJNIscene(
         JNIEnv* env,
         jclass /* this */,
         jlong jImporter) {
@@ -68,7 +68,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_freeJNIscene(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_destroyJNIimporter(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_destroyJNIimporter(
         JNIEnv* env,
         jclass /* this */,
         jlong jImporter) {
@@ -77,7 +77,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_destroyJNIimporter(
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNImeshes(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getNumJNImeshes(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
@@ -87,7 +87,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNImeshes(
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNItextures(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getNumJNItextures(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
@@ -97,7 +97,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNItextures(
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIcameras(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getNumJNIcameras(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
@@ -108,7 +108,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIcameras(
 
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIlights(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getNumJNIlights(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
@@ -118,7 +118,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIlights(
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIanimations(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getNumJNIanimations(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene) {
@@ -128,7 +128,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getNumJNIanimations(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedLabel(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIembeddedLabel(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -141,7 +141,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedLabel(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedLength(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIembeddedLength(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -154,7 +154,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedLength(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedOffset(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIembeddedOffset(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -167,7 +167,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedOffset(
 }
 
 extern "C" JNIEXPORT jbyteArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIembeddedBytes(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIembeddedBytes(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,

@@ -5,7 +5,7 @@
 #include <assimp/scene.h>
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImaterialIndex(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNImaterialIndex(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -16,7 +16,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImaterialIndex(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIvertices(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIvertices(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -38,7 +38,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIvertices(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInormals(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNInormals(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -60,7 +60,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInormals(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIcolors(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIcolors(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -84,7 +84,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIcolors(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNItextureCoords(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNItextureCoords(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -106,7 +106,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNItextureCoords(
 }
 
 extern "C" JNIEXPORT jintArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIindices(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIindices(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -146,7 +146,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIindices(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImeshName(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNImeshName(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -157,7 +157,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImeshName(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumAnimeshes(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNInumAnimeshes(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -168,7 +168,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumAnimeshes(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIanimeshVertices(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIanimeshVertices(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,

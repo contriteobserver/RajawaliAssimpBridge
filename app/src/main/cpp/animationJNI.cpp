@@ -5,7 +5,7 @@
 #include <assimp/anim.h>
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIanimationName(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIanimationName(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -17,7 +17,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIanimationName(
 }
 
 extern "C" JNIEXPORT jdouble JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIanimationDuration(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIanimationDuration(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -28,7 +28,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIanimationDuration(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumChannels(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNInumChannels(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -39,7 +39,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumChannels(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumMeshChannels(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNInumMeshChannels(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -50,7 +50,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumMeshChannels(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumMorphMeshChannels(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNInumMorphMeshChannels(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -61,7 +61,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumMorphMeshChannels(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNItranslationKeyframes(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNItranslationKeyframes(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -86,7 +86,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNItranslationKeyframes(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIorientationKeyframes(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIorientationKeyframes(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -112,7 +112,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIorientationKeyframes(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIscalingKeyframes(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIscalingKeyframes(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -137,7 +137,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIscalingKeyframes(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumMorphKeyFrames(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNInumMorphKeyFrames(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -153,7 +153,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInumMorphKeyFrames(
 }
 
 extern "C" JNIEXPORT jintArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImorphVertices(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNImorphVertices(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -174,7 +174,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImorphVertices(
 }
 
 extern "C" JNIEXPORT jdoubleArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImorphVertexWeights(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNImorphVertexWeights(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,

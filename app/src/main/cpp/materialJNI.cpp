@@ -5,7 +5,7 @@
 #include <assimp/scene.h>
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImaterialName(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNImaterialName(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -16,7 +16,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNImaterialName(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIambientTexture(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_hasJNIambientTexture(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -29,7 +29,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIambientTexture(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIdiffuseTexture(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_hasJNIdiffuseTexture(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -42,7 +42,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIdiffuseTexture(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIspecularTexture(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_hasJNIspecularTexture(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -55,7 +55,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNIspecularTexture(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNInormalMap(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_hasJNInormalMap(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -68,7 +68,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_hasJNInormalMap(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIshadingModel(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIshadingModel(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -81,7 +81,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIshadingModel(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_enableJNIwireframe(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_enableJNIwireframe(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -94,7 +94,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_enableJNIwireframe(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIambientRGBA(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIambientRGBA(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -117,7 +117,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIambientRGBA(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdiffuseRGBA(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIdiffuseRGBA(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -140,7 +140,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdiffuseRGBA(
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIspecularRGBA(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIspecularRGBA(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -163,7 +163,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIspecularRGBA(
 }
 
 extern "C" JNIEXPORT jfloat JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIopacity(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIopacity(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -176,7 +176,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIopacity(
 }
 
 extern "C" JNIEXPORT jfloat JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNItransparency(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNItransparency(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -189,7 +189,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNItransparency(
 }
 
 extern "C" JNIEXPORT jfloat JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIshininess(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIshininess(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -203,7 +203,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIshininess(
 
 
 extern "C" JNIEXPORT jfloat JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIstrength(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIstrength(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -216,7 +216,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIstrength(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdoubleSided(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIdoubleSided(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -229,7 +229,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdoubleSided(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIambientName(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIambientName(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -247,7 +247,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIambientName(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdiffuseName(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIdiffuseName(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -265,7 +265,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIdiffuseName(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIspecularName(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIspecularName(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
@@ -283,7 +283,7 @@ Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNIspecularName(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_rajawali_rajawaliassimpbridge_Bridge_getJNInormalMapName(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNInormalMapName(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,
