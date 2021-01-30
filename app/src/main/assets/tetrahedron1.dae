@@ -350,7 +350,7 @@
         <instance_camera url="#Camera-camera"/>
       </node>
       <node id="Tetrahedron" name="Tetrahedron" type="NODE">
-        <matrix sid="transform">-1 8.74228e-8 0 0 -8.74228e-8 -1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <matrix sid="transform">-1 0 0 0 0 -1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#Tetrahedron-mesh" name="Tetrahedron">
           <bind_material>
             <technique_common>
