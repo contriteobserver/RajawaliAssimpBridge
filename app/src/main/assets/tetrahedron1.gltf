@@ -32,8 +32,8 @@
             "nodes" : [
                 0,
                 2,
-                3,
-                5
+                4
+
             ]
         }
     ],
@@ -76,9 +76,6 @@
             ]
         },
         {
-            "name" : "Target"
-        },
-        {
             "extensions" : {
                 "KHR_lights_punctual" : {
                     "light" : 0
@@ -99,7 +96,7 @@
         },
         {
             "children" : [
-                4
+                3
             ],
             "name" : "Sun",
             "translation" : [
@@ -114,9 +111,9 @@
             "name" : "Camera",
             "perspective" : {
                 "aspectRatio" : 1.7777777777777777,
-                "yfov" : 0.39959652046304894,
+                "yfov" : 0.4,
                 "zfar" : 100,
-                "znear" : 0.10000000149011612
+                "znear" : 0.1
             },
             "type" : "perspective"
         }
@@ -235,7 +232,7 @@
             },
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.75,
+                    0.8,
                     0,
                     0,
                     1
