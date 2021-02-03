@@ -19,6 +19,7 @@ import org.rajawali3d.materials.Material;
 import org.rajawali3d.math.Quaternion;
 import org.rajawali3d.math.vector.Vector3;
 import org.rajawali3d.renderer.Renderer;
+import org.rajawali3d.util.RajLog;
 import org.rajawali3d.view.SurfaceView;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(getLocalClassName() + ".version", Bridge.getVersion());
         importer = Bridge.createImporter(getAssets());
+
+        RajLog.setDebugEnabled(true);
     }
 
     @Override
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 Object3D obj = new Object3D();
                 getCurrentScene().addChild(obj);
 
-                scene = Bridge.readFile(importer, "tetrahedron2.gltf");
+                scene = Bridge.readFile(importer, "tetrahedron1.gltf");
                 if(scene==0) {
                     Log.e(getLocalClassName() + ".readFile", Bridge.errorMessage(importer));
                 } else {

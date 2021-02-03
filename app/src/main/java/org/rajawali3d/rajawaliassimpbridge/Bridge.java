@@ -4,6 +4,7 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.util.Log;
 
+import org.rajawali3d.Geometry3D;
 import org.rajawali3d.Object3D;
 import org.rajawali3d.animation.Animation;
 import org.rajawali3d.animation.AnimationGroup;
@@ -151,10 +152,20 @@ public class Bridge {
 
         int numKeyFrames = getJNInumMorphKeyFrames(scene, index);
         if(numKeyFrames > 0) {
-            int vertices[] = getJNImorphVertices(scene, index);
-            double weights[]  = getJNImorphVertexWeights(scene, index);
-            Log.i("Bridge.getAnimationAt", "morph vertices: " + vertices);
-            Log.i("Bridge.getAnimationAt", "morph vertices: " + weights);
+            Object3D child = obj.getChildByName(getJNImeshName(scene, index));
+            if(child!=null) {
+                MalleableMaterialPlugin plugin = new MalleableMaterialPlugin();
+                plugin.setVertices(getJNIanimeshVertices(scene, index, 0));
+                plugin.setNormals(getJNIanimeshNormals(scene, index,0));
+                child.getMaterial().addPlugin(plugin);
+
+                WeightedPath path = new WeightedPath(getJNImorphVertexWeights(scene, index));
+                SplineWeightAnimation3D anim = new SplineWeightAnimation3D(path);
+                anim.setDurationDelta(getJNIanimationDuration(scene, index));
+                anim.setTransformable3D(child);
+                group.addAnimation(anim);
+            }
+
         }
 
         group.setDurationDelta(getJNIanimationDuration(scene, index));
@@ -207,7 +218,8 @@ public class Bridge {
     private static native int getJNInumAnimeshes(long scene, int index);
 
     // methods indexed by animesh
-    private static native float[] getJNIanimeshVertices(long scene, int meshIndex, int animeshIndex);
+    private static native float[] getJNIanimeshVertices(long scene, int mesh, int animesh);
+    private static native float[] getJNIanimeshNormals(long scene, int mesh, int animesh);
 
     // methods indexed by material
     private static native int getJNIshadingModel(long scene, int index);
@@ -256,7 +268,7 @@ public class Bridge {
     private static native int getJNInumMorphKeyFrames(long scene, int animation);
 
     // methods indexed by key
-    private static native int[] getJNImorphVertices(long scene, int animation);
+    private static native int[] getJNImorphKeyframes(long scene, int animation);
     private static native double[] getJNImorphVertexWeights(long scene, int animation);
 
     public enum aiShadingModel {

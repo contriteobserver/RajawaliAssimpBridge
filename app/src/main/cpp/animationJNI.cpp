@@ -153,7 +153,7 @@ Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNInumMorphKeyFrames(
 }
 
 extern "C" JNIEXPORT jintArray JNICALL
-Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNImorphVertices(
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNImorphKeyframes(
         JNIEnv* env,
         jclass /* this */,
         jlong jScene,

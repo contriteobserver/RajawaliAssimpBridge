@@ -192,3 +192,29 @@ Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIanimeshVertices(
     }
     return result;
 }
+
+extern "C" JNIEXPORT jfloatArray JNICALL
+Java_org_rajawali3d_rajawaliassimpbridge_Bridge_getJNIanimeshNormals(
+        JNIEnv* env,
+        jclass /* this */,
+        jlong jScene,
+        jint jMeshIndex,
+        jint jAnimeshIndex) {
+    jfloatArray result;
+    auto * scene = reinterpret_cast<aiScene *>(jScene);
+    aiMesh * mesh = scene->mMeshes[reinterpret_cast<int>(jMeshIndex)];
+    if(mesh->mNumAnimMeshes < reinterpret_cast<int>(jAnimeshIndex)) return result = env->NewFloatArray(0);
+    if(reinterpret_cast<int>(jAnimeshIndex) < 0) return result = env->NewFloatArray(0);
+
+    aiAnimMesh * animesh = mesh->mAnimMeshes[reinterpret_cast<int>(jAnimeshIndex)];
+    result = env->NewFloatArray(3 * animesh->mNumVertices);
+    for(int i=0; i<animesh->mNumVertices; i++) {
+        aiVector3D normal = animesh->mNormals[i];
+        jfloat buf[3];
+        buf[0] = normal.x;
+        buf[1] = normal.y;
+        buf[2] = normal.z;
+        env->SetFloatArrayRegion(result,3*i,3, buf);
+    }
+    return result;
+}
