@@ -38,6 +38,7 @@ add_library( # Sets the name of the library.
              materialJNI.cpp
              lightJNI.cpp
              animationJNI.cpp
+             cameraJNI.cpp
              BundledAssetIOSystem.cpp
         )
 

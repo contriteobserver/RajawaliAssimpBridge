@@ -13,6 +13,8 @@ import org.rajawali3d.animation.Animation;
 import org.rajawali3d.animation.Animation3D;
 import org.rajawali3d.animation.AnimationGroup;
 import org.rajawali3d.animation.RotateOnAxisAnimation;
+import org.rajawali3d.cameras.Camera;
+import org.rajawali3d.cameras.OrthographicCamera;
 import org.rajawali3d.lights.ALight;
 import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.materials.Material;
@@ -111,11 +113,20 @@ public class MainActivity extends AppCompatActivity {
                         getCurrentScene().registerAnimation(anim);
                     }
 
+                    Log.i(getLocalClassName() + ".initScene", "parsed " + Bridge.getNumCameras(scene)+ " camera");
+                    for(int i=0; i<Bridge.getNumLights(scene); i++) {
+                        Camera cam = Bridge.getCameraAt(scene, i);
+                        getCurrentScene().addAndSwitchCamera(cam);
+                    }
+                    if(Bridge.getNumLights(scene)==0) {
+                        getCurrentCamera().setPosition(5,3,-4);
+                        getCurrentCamera().setLookAt(Vector3.ZERO);
+                    }
+
                     Bridge.freeScene(importer);
                 }
 
-                getCurrentCamera().setPosition(5,3,-4);
-                getCurrentCamera().setLookAt(Vector3.ZERO);
+
             } catch(Exception e) {
                 Log.e(getLocalClassName(), e.getMessage());
             }

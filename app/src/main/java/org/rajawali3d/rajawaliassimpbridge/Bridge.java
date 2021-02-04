@@ -9,6 +9,7 @@ import org.rajawali3d.Object3D;
 import org.rajawali3d.animation.Animation;
 import org.rajawali3d.animation.AnimationGroup;
 import org.rajawali3d.animation.SplineTranslateAnimation3D;
+import org.rajawali3d.cameras.Camera;
 import org.rajawali3d.curves.CatmullRomCurve3D;
 import org.rajawali3d.lights.ALight;
 import org.rajawali3d.lights.DirectionalLight;
@@ -97,6 +98,18 @@ public class Bridge {
                 break;
         }
         return light;
+    }
+
+    static Camera getCameraAt(long scene, int index) {
+        float[] buf;
+        Camera cam = new Camera();
+        buf = getJNIcameraPosition(scene, index);
+        cam.setPosition(buf[0], buf[1], buf[2]);
+        buf = getJNIcameraLookAt(scene, index);
+        cam.setLookAt(buf[0], buf[1], buf[2]);
+        buf = getJNIcameraUpAxis(scene, index);
+        cam.setUpAxis(new Vector3(buf[0], buf[1], buf[2]));
+        return cam;
     }
 
     static AnimationGroup getAnimationFor(Object3D obj, long scene, int index) {
@@ -249,6 +262,12 @@ public class Bridge {
     private static native float[] getJNIlightAmbientRGB(long scene, int index);
     private static native float[] getJNIlightDiffuseRGB(long scene, int index);
     private static native float[] getJNIlightSpecularRGB(long scene, int index);
+
+    // methods indexed by camera
+    private static native String getJNIcameraName(long scene, int animation);
+    private static native float[] getJNIcameraUpAxis(long scene, int camera);
+    private static native float[] getJNIcameraPosition(long scene, int camera);
+    private static native float[] getJNIcameraLookAt(long scene, int camera);
 
     // methods indexed by label
     private static native String getJNIembeddedLabel(long scene, String label);
